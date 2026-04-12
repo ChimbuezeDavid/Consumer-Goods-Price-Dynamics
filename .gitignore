@@ -20,6 +20,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+forecast/
 
 # Virtual Environment
 venv/
