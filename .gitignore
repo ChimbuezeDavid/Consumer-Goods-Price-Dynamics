@@ -21,6 +21,17 @@ wheels/
 .installed.cfg
 *.egg
 forecast/
+models/
+full_engineered.csv
+test_fe.csv
+test_raw.csv
+test_scaled.csv
+train_fe.csv
+train_raw.csv
+train_scaled.csv
+val_fe.csv
+val_raw.csv
+val_scaled.csv
 
 # Virtual Environment
 venv/
