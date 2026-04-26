@@ -20,12 +20,12 @@ def color_mom(val):
 def show_forecast():
     # Clean Dashboard Header
     st.markdown(f"""
-        <div style="background: white; padding: 2rem; border-radius: 24px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 5px solid {THEME['primary']};">
+        <div style="background: white; padding: 2rem; border-radius: 24px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 5px solid {THEME['secondary']};">
             <div>
                 <h1 style="color: {THEME['primary']}; margin: 0; font-weight: 800;">Scenario Pulse Dashboard</h1>
                 <p style="color: #64748b; margin-top: 0.2rem;">Adjust macroeconomic levers to simulate price propagation.</p>
             </div>
-            <div style="background: {THEME['background']}; padding: 0.5rem 1.5rem; border-radius: 50px; border: 1px solid {THEME['primary']}; color: {THEME['primary']}; font-weight: 700;">
+            <div style="background: {THEME['background']}; padding: 0.5rem 1.5rem; border-radius: 50px; border: 1px solid {THEME['secondary']}; color: {THEME['secondary']}; font-weight: 700;">
                 LIVE ENGINE v2.5
             </div>
         </div>

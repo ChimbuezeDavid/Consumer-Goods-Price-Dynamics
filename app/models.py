@@ -168,5 +168,8 @@ class ForecastEngine:
             
         return {cat: [round(p, 2) for p in preds] for cat, preds in all_results.items()}
 
-# Initialize engine
-forecast_engine = ForecastEngine()
+@st.cache_resource
+def get_forecast_engine():
+    return ForecastEngine()
+
+forecast_engine = get_forecast_engine()

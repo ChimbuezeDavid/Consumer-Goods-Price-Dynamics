@@ -13,15 +13,15 @@ LAST_KNOWN_CPI = {
 # New Brand: NairaPulse AI
 BRAND_NAME = "NairaPulse AI"
 
-# Financial Theme Colors
+# Financial Theme Colors - High-End Dark Palette
 THEME = {
-    "primary": "#1E40AF",    # Trust Blue
+    "primary": "#1D4ED8",    # Institutional Blue
     "secondary": "#FBBF24",  # Gold
     "success": "#10B981",    # Emerald Green
     "danger": "#EF4444",     # Rose Red
-    "background": "#F8FAFC", # Light Slate
-    "sidebar": "#1E293B",    # Dark Slate
-    "text": "#0F172A"        # Deep Navy
+    "background": "#020617", # Ultra-Navy (Deepest)
+    "sidebar": "#0F172A",    # Midnight Navy
+    "text": "#F8FAFC"        # Off-White
 }
 
 PAGE_CONFIG = {
@@ -33,38 +33,73 @@ PAGE_CONFIG = {
 
 CUSTOM_CSS = f"""
 <style>
-    .main {{
-        background-color: {THEME['background']};
+    /* Global Page Styling - Aggressive Override */
+    [data-testid="stAppViewContainer"] {{
+        background-color: {THEME['background']} !important;
     }}
+    [data-testid="stAppViewBlockContainer"] {{
+        background-color: {THEME['background']} !important;
+    }}
+    .main {{
+        background-color: {THEME['background']} !important;
+    }}
+    
+    /* Global Text Styling */
+    .main p, .main span, .main label, .main li, .main div {{
+        color: {THEME['text']} !important;
+    }}
+    
+    /* Header Overrides */
+    h1, h2, h3, h4, h5, h6 {{
+        color: white !important;
+        font-family: 'Inter', sans-serif !important;
+    }}
+    
+    /* Custom ID Overrides for Gold Headers */
+    .gold-header {{
+        color: {THEME['secondary']} !important;
+    }}
+
     .stButton>button {{
         background-color: {THEME['primary']};
-        color: white;
+        color: white !important;
         border-radius: 8px;
         border: none;
         padding: 0.5rem 1rem;
         transition: all 0.3s ease;
     }}
-    .stButton>button:hover {{
-        background-color: {THEME['secondary']};
-        color: {THEME['text']};
-        transform: translateY(-2px);
-    }}
-    [data-testid="stSidebar"] {{
+    .stMetric {{
         background-color: {THEME['sidebar']};
+        padding: 1.5rem;
+        border-radius: 16px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-left: 5px solid {THEME['primary']};
     }}
-    [data-testid="stSidebar"] * {{
+    /* Force metric text colors */
+    [data-testid="stMetricValue"] > div {{
         color: white !important;
     }}
-    h1, h2, h3 {{
-        color: {THEME['primary']};
-        font-family: 'Inter', sans-serif;
+    [data-testid="stMetricLabel"] > div {{
+        color: #E2E8F0 !important;
     }}
-    .stMetric {{
-        background-color: white;
-        padding: 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-        border-left: 5px solid {THEME['primary']};
+    /* High-Impact CTA Button */
+    div#launch-cta .stButton>button {{
+        background: linear-gradient(90deg, {THEME['secondary']} 0%, #F59E0B 100%);
+        color: {THEME['text']};
+        border: none;
+        padding: 1.5rem 2rem;
+        font-size: 1.5rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+        border-radius: 50px;
+        box-shadow: 0 10px 20px rgba(251, 191, 36, 0.3);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }}
+    div#launch-cta .stButton>button:hover {{
+        transform: scale(1.05) translateY(-5px);
+        box-shadow: 0 15px 30px rgba(251, 191, 36, 0.5);
+        color: black;
     }}
 </style>
 """

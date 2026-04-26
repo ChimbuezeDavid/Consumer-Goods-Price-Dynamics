@@ -3,43 +3,49 @@ import streamlit as st
 import sys
 from pathlib import Path
 
-# Add app folder to Python path
-sys.path.append(str(Path(__file__).parent / "app"))
+# No need to manually append to sys.path since we use package-style imports
 
-from app.config import PAGE_CONFIG, CUSTOM_CSS
+from app.config import PAGE_CONFIG, CUSTOM_CSS, BRAND_NAME
 
 st.set_page_config(**PAGE_CONFIG)
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
+from app.pages.home import show_home
+from app.pages.forecast import show_forecast
+from app.pages.about import show_about
+from app.pages.contact import show_contact
+
 # Initialize Session State for Navigation
 if 'page' not in st.session_state:
-    st.session_state.page = "🏠 Home"
+    st.session_state.page = "home"
 
-# Sidebar Navigation
+# Define Pages for st.navigation
+pages = [
+    st.Page(show_home, title="Home", icon="🏠", url_path="home", default=(st.session_state.page == "home")),
+    st.Page(show_forecast, title="Forecast Engine", icon="📈", url_path="forecast"),
+    st.Page(show_about, title="About Methodology", icon="ℹ️", url_path="about"),
+    st.Page(show_contact, title="Contact Developer", icon="📞", url_path="contact"),
+]
+
+# Run Navigation
+pg = st.navigation(pages)
+
+# Custom Sidebar Branding (Standard for premium apps)
 with st.sidebar:
-    st.title("🇳🇬 NairaPulse AI")
-    st.caption("Advanced Price Dynamics Forecasting")
+    st.markdown(f"""
+        <div style="text-align: center; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 2rem;">
+            <h1 style="color: white; margin: 0; font-size: 1.8rem;"> {BRAND_NAME}</h1>
+            <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 0.5rem; letter-spacing: 1px;">FORECASTING INTELLIGENCE</p>
+        </div>
+    """, unsafe_allow_html=True)
 
-    # Sync radio with session state
-    page_options = ["🏠 Home", "📈 Forecast", "ℹ️ About", "📞 Contact"]
-    index = page_options.index(st.session_state.page)
-    
-    st.session_state.page = st.radio(
-        "Navigation",
-        page_options,
-        index=index
-    )
+# Run the selected page
+pg.run()
 
-# Route to pages
-if st.session_state.page == "🏠 Home":
-    from app.pages.home import show_home
-    show_home()
-elif st.session_state.page == "📈 Forecast":
-    from app.pages.forecast import show_forecast
-    show_forecast()
-elif st.session_state.page == "ℹ️ About":
-    from app.pages.about import show_about
-    show_about()
-elif st.session_state.page == "📞 Contact":
-    from app.pages.contact import show_contact
-    show_contact()
+# Centralized Footer (Ensuring it runs on all pages)
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown(f"""
+    <div style="text-align: center; color: #64748b; font-size: 0.9rem; border-top: 2px solid gold; padding-top: 2rem; margin-top: 2rem;">
+        © 2026 NairaPulse AI • Built with Passion for Nigeria's Economic Development • {BRAND_NAME}
+    </div>
+""", unsafe_allow_html=True)

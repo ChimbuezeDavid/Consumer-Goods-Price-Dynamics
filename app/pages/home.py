@@ -1,100 +1,127 @@
 # pages/home.py
 import streamlit as st
 from app.config import THEME
+from app.ui_components import render_hero, render_section_header, render_card, render_sidebar_info_card
 
 def show_home():
-    # Hero Section
+    # Standard Hero
+    render_hero(
+        title="NairaPulse AI",
+        subtitle="Institutional-Grade Intelligence for the Nigerian Consumer Economy. Navigating volatility through the power of Stacked Ensemble Forecasting."
+    )
+
+    # The Narrative
+    col_a, col_b = st.columns([1.5, 1], gap="large")
+    
+    with col_a:
+        render_section_header("🌪️", "The Volatility Gap")
+        st.write("""
+        Nigeria’s economy is defined by high-velocity shifts. Sudden currency devaluations, global oil shocks, and policy 
+        recalibrations create a landscape where traditional linear models often fail.
+        
+        **NairaPulse AI** was born to bridge this gap. We don't just look at history; we simulate the future by 
+        synthesizing econometric rigor with deep learning memory.
+        """)
+        
+        render_section_header("💡", "Institutional Confidence")
+        st.write("""
+        Whether you are managing a corporate supply chain or drafting national policy, our platform provides the 
+        analytical "Pulse" needed to turn macroeconomic uncertainty into strategic advantage.
+        """)
+    
+    with col_b:
+        render_sidebar_info_card("Live Macro Benchmarks", {
+            "Headline Inflation": "15.38%",
+            "Official FX Rate": "₦1,351.35",
+            "Brent Crude Oil": "$105.33"
+        })
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
+
+    # Sector Pulses
+    st.markdown("<br>", unsafe_allow_html=True)
     st.markdown(f"""
-        <div style="background: linear-gradient(135deg, {THEME['primary']} 0%, #3B82F6 100%); padding: 5rem 2rem; border-radius: 24px; color: white; margin-bottom: 3rem; text-align: center; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);">
-            <h1 style="font-size: 4.5rem; font-weight: 900; margin-bottom: 1rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">NairaPulse AI</h1>
-            <p style="font-size: 1.6rem; opacity: 0.95; max-width: 850px; margin: 0 auto; line-height: 1.4; font-weight: 300;">
-                Precision Intelligence for Nigeria's Consumer Economy. 
-                Forecasting the pulse of essential commodity prices through advanced AI.
-            </p>
-            <div style="margin-top: 3rem; display: flex; justify-content: center; gap: 1.5rem;">
-                <div style="background: white; color: {THEME['primary']}; padding: 0.8rem 2rem; border-radius: 50px; font-weight: 700; font-size: 1rem;">STACKED ENSEMBLE v2.5</div>
-                <div style="background: {THEME['secondary']}; color: {THEME['text']}; padding: 0.8rem 2rem; border-radius: 50px; font-weight: 700; font-size: 1rem;">ABUAD COMPUTING</div>
-            </div>
+        <div style="text-align: center; margin-bottom: 3.5rem;">
+            <p style="color: {THEME['secondary']}; font-weight: 800; letter-spacing: 2px; margin-bottom: 0.5rem;">CORE ANALYTICS</p>
+            <h2 style="color: {THEME['primary']}; font-weight: 900; font-size: 2.5rem; margin-top: 0;">Strategic Sector Pulses</h2>
         </div>
     """, unsafe_allow_html=True)
-
-    # Why NairaPulse AI
-    col1, col2 = st.columns([2.8, 1.2])
-    with col1:
-        st.markdown(f"### <span style='color: {THEME['primary']}'>💡 Why NairaPulse AI Matters</span>", unsafe_allow_html=True)
-        st.markdown("""
-        Nigeria’s consumer prices are highly sensitive to macroeconomic forces such as exchange rate volatility and global oil shocks. 
-        **NairaPulse AI** bridges the gap between raw data and actionable foresight. 
-        By synthesizing econometric rigor with deep learning memory, we help you anticipate market shifts with institutional confidence.
-        """)
-    with col2:
-        st.info("""
-        **Benchmark Rates**
-        - Inflation: **15.88%**
-        - FX Rate: **₦1,556.89 / USD**
-        - Oil Price: **$82.50 / barrel**
-        """)
-
-    st.write("---")
-
-    # ==================== TARGET CATEGORIES REDESIGN ====================
-    st.markdown(f"### <span style='color: {THEME['primary']}'>🎯 Core Sector Pulses</span>", unsafe_allow_html=True)
-    st.markdown("We focus on the three pillars of the Nigerian household basket. Select a sector to understand why it's critical.")
-
+    
     cat_data = {
-        "Food": {
+        "Food Intelligence": {
             "emoji": "🥘", 
-            "color": "#10B981", 
-            "why": "Food represents over 50% of the average Nigerian household's expenditure. It is highly sensitive to both climate shocks and imported inflation from exchange rate shifts.",
-            "desc": "Grains, imported food, and farm produce."
+            "color": THEME['secondary'], 
+            "detail": "Predicting the pulse of Nigeria's primary survival cost driver. Essential for social stability analysis."
         },
-        "Transport": {
+        "Transport Dynamics": {
             "emoji": "🚗", 
             "color": "#3B82F6", 
-            "why": "Transport is the circulatory system of the economy. Fuel price deregulation and oil price shifts propagate through transport costs into the prices of all other goods.",
-            "desc": "Inter-city and intra-city logistics costs."
+            "detail": "Mapping the circulatory system of distribution. Analyzing the ripple effects of fuel price shifts."
         },
-        "Clothing": {
+        "Clothing & FX": {
             "emoji": "👕", 
             "color": "#F59E0B", 
-            "why": "A sector dominated by imports. Clothing price dynamics serve as a primary indicator of exchange rate pass-through and consumer discretionary spending health.",
-            "desc": "Apparel and essential consumer wear."
+            "detail": "Tracking non-discretionary import pressure. A barometer for exchange rate pass-through."
         }
     }
 
     cols = st.columns(3)
     for i, (name, data) in enumerate(cat_data.items()):
         with cols[i]:
-            st.markdown(f"""
-            <div style='background: white; border-top: 8px solid {data["color"]}; border-radius: 20px; padding: 2rem 1.5rem; text-align: center; height: 320px; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); margin-bottom: 1rem;'>
-                <div style='font-size: 3.5rem; margin-bottom: 1rem;'>{data["emoji"]}</div>
-                <h3 style='margin: 0 0 0.5rem 0; color: {THEME["text"]}; font-weight: 800; font-size: 1.5rem;'>{name}</h3>
-                <p style='margin: 0; font-size: 0.95rem; color: #475569; line-height: 1.5;'><b>Why:</b> {data["why"]}</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Read More button for each category
-            if st.button(f"Read more about {name}", key=f"read_more_{name}", use_container_width=True):
-                st.session_state.page = "ℹ️ About"
-                st.rerun()
+            render_card(title=name, content=data['detail'], color=data['color'], icon=data['emoji'], height="350px")
 
-    st.write("---")
+    st.markdown("<br><br>", unsafe_allow_html=True)
 
-    # Call to Action
+    # Methodology Summary
     st.markdown(f"""
-    <div style='text-align: center; padding: 4rem 2rem; background: {THEME['primary']}; color: white; border-radius: 24px; margin: 2.5rem 0; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);'>
-        <h2 style='color: white; margin-bottom: 1.5rem; font-weight: 800;'>Execute Strategic Scenarios</h2>
-        <p style='font-size: 1.3rem; margin-bottom: 2.5rem; opacity: 0.9; max-width: 700px; margin-left: auto; margin-right: auto;'>
-            Harness the power of NairaPulse AI to simulate how macroeconomic shocks ripple through the economy.
-        </p>
-    </div>
+        <div style="background: {THEME['primary']}; padding: 4rem 2rem; border-radius: 30px; color: white; text-align: center;">
+            <h2 style="color: white; margin-bottom: 3rem;">How the Pulse is Calculated</h2>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 2rem;">
+                <div style="max-width: 200px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📡</div>
+                    <h4 style="color: {THEME['secondary']};">1. Data Ingestion</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">25 years of macro history fused with real-time oil and FX feeds.</p>
+                </div>
+                <div style="max-width: 200px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🧠</div>
+                    <h4 style="color: {THEME['secondary']};">2. Stacked Processing</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">SARIMAX, RF, and LSTM base layers synthesized by XGBoost.</p>
+                </div>
+                <div style="max-width: 200px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📈</div>
+                    <h4 style="color: {THEME['secondary']};">3. Pulse Output</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">Actionable MoM forecasts with stochastic shock simulation.</p>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
+
+    # Sophisticated Institutional Terminal CTA
+    st.markdown(f"""
+        <div style="background: linear-gradient(145deg, {THEME['sidebar']} 0%, #020617 100%); 
+                    padding: 6rem 3rem; border-radius: 40px; 
+                    text-align: center; border: 2px solid {THEME['secondary']}; 
+                    box-shadow: 0 0 40px {THEME['secondary']}20, 0 30px 60px -12px rgba(0, 0, 0, 0.8); 
+                    margin-top: 6rem; position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, transparent, {THEME['secondary']}, transparent);"></div>
+            <p style="color: {THEME['secondary']}; font-weight: 800; letter-spacing: 5px; margin-bottom: 2rem;">TERMINAL STATUS: READY</p>
+            <h1 style="color: white; font-weight: 900; font-size: 4rem; margin-bottom: 2rem; letter-spacing: -2px;">Unleash the Pulse Engine</h1>
+            <p style="color: #E2E8F0; font-size: 1.4rem; max-width: 850px; margin: 0 auto 4rem auto; line-height: 1.7; font-weight: 300;">
+                Deploy our proprietary <b>Stacked Ensemble</b> to simulate high-velocity market shocks. 
+                Visualize the recursive propagation of FX and Oil dynamics across Nigeria's strategic consumer landscape.
+            </p>
+            <div id="launch-cta" style="display: flex; justify-content: center;">
     """, unsafe_allow_html=True)
     
-    if st.button("🚀 GO TO FORECAST", use_container_width=True):
-        st.session_state.page = "📈 Forecast"
-        st.rerun()
-
-    st.caption("Final Year Project • Chimbueze David • Department of Computing • ABUAD")
+    col_cta1, col_cta2, col_cta3 = st.columns([1, 1.5, 1])
+    with col_cta2:
+        if st.button("🚀 LAUNCH PULSE ENGINE", use_container_width=True):
+            st.session_state.page = "forecast"
+            st.rerun()
+            
+    st.markdown("</div></div>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     show_home()
