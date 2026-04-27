@@ -157,7 +157,25 @@ class ForecastEngine:
                 
                 meta_pred = self.meta_models[category].predict(np.array([[sar_pred, rf_pred, lstm_pred]]))[0]
                 
-                # Add randomness to account for unobserved factors
+                # --- Economic Heuristic Layer (Sanity Checks) ---
+                # Transport Sensitivity to Crude Oil Shocks
+                if category == "Transport":
+                    # Baseline oil price from recent data
+                    baseline_oil = self.recent_df['oil_price'].iloc[-1]
+                    oil_shock = (oil_price - baseline_oil) / baseline_oil
+                    if oil_shock > 0:
+                        # Apply a propagation factor: a 10% oil shock increases transport mom by ~0.5% - 1.2%
+                        # based on Nigerian distribution elasticity.
+                        meta_pred += (oil_shock * 8.5) 
+                
+                # Food Sensitivity to Exchange Rate pass-through
+                if category == "Food":
+                    baseline_fx = self.recent_df['exchange_rate'].iloc[-1]
+                    fx_shock = (exchange_rate - baseline_fx) / baseline_fx
+                    if fx_shock > 0:
+                        meta_pred += (fx_shock * 4.2)
+                
+                # --- Stochastic Layer ---
                 noise = np.random.normal(0, abs(meta_pred) * 0.08 + 0.15)
                 meta_pred += noise
                 
