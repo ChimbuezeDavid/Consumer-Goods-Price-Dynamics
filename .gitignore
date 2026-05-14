@@ -46,6 +46,6 @@ ENV/
 
 # Large/Auto-generated Data
 notebook/.ipynb_checkpoints/
-output/
+outputs/
 prediction/
 *.log
