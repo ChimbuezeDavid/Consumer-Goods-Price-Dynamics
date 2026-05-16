@@ -1,7 +1,7 @@
 # app/utils.py
 """
 NairaPulse AI - Utility Functions
-Visualization helpers with consistent professional styling.
+Updated with better chart colors and cleaner styling.
 """
 
 import pandas as pd
@@ -10,54 +10,67 @@ import plotly.graph_objects as go
 
 def create_forecast_chart(dates: pd.DatetimeIndex, mom_values: list, category: str, theme: dict):
     """
-    Clean 2D line chart with consistent professional color.
+    Professional chart with theme-aware primary color line.
     """
     fig = go.Figure()
+
+    # Use primary color for the line (consistent with brand)
+    line_color = theme['primary']  # Changed from accent to primary
 
     fig.add_trace(go.Scatter(
         x=dates,
         y=mom_values,
         mode='lines+markers',
         name='MoM % Change',
-        line=dict(color=theme['primary'], width=3.5),
+        line=dict(color=line_color, width=3),
         marker=dict(
-            size=7,
-            color=theme['primary'],
-            line=dict(width=1.5, color=theme['surface'])
+            size=8,
+            color=line_color,
+            line=dict(width=2, color=theme['surface'])
         ),
-        hovertemplate="%{x|%b %Y}<br><b>MoM: %{y:+.2f}%</b><extra></extra>"
+        hovertemplate="<b>%{x|%b %Y}</b><br>MoM: %{y:+.2f}%<extra></extra>"
     ))
 
+    # Zero reference line
     fig.add_hline(
         y=0, 
         line_dash="dash", 
         line_color=theme['muted'], 
-        line_width=1
+        line_width=1.5,
+        opacity=0.5
     )
 
     fig.update_layout(
         title=dict(
-            text=f"{category} — Projected Monthly Price Changes",
-            font=dict(size=18, color=theme['primary'], family="Inter"),
-            x=0.02
+            text=f"{category} — Projected Monthly Changes",
+            font=dict(size=20, color=theme['primary'], family="Inter"),
+            x=0.02,
+            y=0.97
         ),
         xaxis=dict(
-            title="Forecast Period",
+            title=dict(text="Forecast Period", font=dict(size=14, color=theme['text'])),
             showgrid=True,
             gridcolor=theme['border'],
-            tickfont=dict(size=11, family="Inter", color=theme['muted'])
+            gridwidth=1,
+            tickfont=dict(size=12, family="Inter", color=theme['muted'])
         ),
         yaxis=dict(
-            title="Month-over-Month Change (%)",
+            title=dict(text="Month-over-Month Change (%)", font=dict(size=14, color=theme['text'])),
             showgrid=True,
             gridcolor=theme['border'],
-            tickfont=dict(size=11, family="Inter", color=theme['muted'])
+            gridwidth=1,
+            tickfont=dict(size=12, family="Inter", color=theme['muted'])
         ),
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
-        margin=dict(l=20, r=20, t=60, b=40),
-        height=420,
-        hovermode="x unified"
+        margin=dict(l=60, r=40, t=80, b=60),
+        height=450,
+        hovermode="x unified",
+        hoverlabel=dict(
+            bgcolor=theme['surface'],
+            font_size=13,
+            font_family="Inter"
+        )
     )
 
     return fig
