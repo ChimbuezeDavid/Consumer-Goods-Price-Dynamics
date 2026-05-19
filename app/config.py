@@ -480,4 +480,37 @@ a:hover {{
 .badge-danger {{
     background: var(--np-danger);
 }}
+
+/* Hide Streamlit Default Elements & Cloud Viewer Badge */
+#MainMenu {{visibility: hidden;}}
+footer {{visibility: hidden;}}
+header {{visibility: hidden;}}
+
+.viewerBadge_container__1QSob,
+[class^="viewerBadge_container"] {{
+    display: none !important;
+}}
+
+[data-testid="stToolbar"] {{
+    display: none !important;
+}}
+
+[data-testid="stDecoration"] {{
+    display: none !important;
+}}
+
+/* Force Text Color on Streamlit Typography & Sidebar */
+.stApp p, 
+.stApp li, 
+.stApp label,
+.stApp [data-testid="stSidebarNav"] span,
+.stApp [data-testid="stSidebarNav"] a {{
+    color: var(--np-text) !important;
+}}
+
+/* Sidebar Navigation Hover & Active Background */
+.stApp [data-testid="stSidebarNav"] a:hover,
+.stApp [data-testid="stSidebarNav"] a[aria-current="page"] {{
+    background-color: var(--np-surface) !important;
+}}
 </style>"""

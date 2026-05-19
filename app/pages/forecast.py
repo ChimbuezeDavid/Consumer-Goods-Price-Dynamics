@@ -139,9 +139,9 @@ def show_forecast():
         with c4:
             render_metric_card("Lowest MoM", f"{min_mom:+.2f}%", color=min_color)
 
-        st.markdown("<br><br>", unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
 
-        # Chart and Table - Better layout
+        # Calculate Dataframes and Indices
         dates = pd.date_range(datetime.now() + timedelta(days=30), periods=horizon, freq='ME')
         
         current_index = LAST_KNOWN_CPI.get(category, 500.0)
@@ -156,28 +156,7 @@ def show_forecast():
             "Implied Index": implied_indices
         })
 
-        # Chart - Full width
-        st.markdown("**Projected Price Trend**")
-        from app.colors import get_theme
-        theme = get_theme(st.session_state.dark_mode)
-        fig = create_forecast_chart(dates, result, category, theme)
-        st.plotly_chart(fig, use_container_width=True)
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        
-        # Table below chart
-        col_left, col_center, col_right = st.columns([1, 2, 1])
-        with col_center:
-            st.markdown("**Monthly Forecast Table**")
-            styled_df = forecast_df.style.format({
-                "MoM Change (%)": "{:+.2f}%",
-                "Implied Index": "{:,.2f}"
-            }).map(color_mom, subset=["MoM Change (%)"])
-            st.dataframe(styled_df, use_container_width=True, hide_index=True)
-
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        # Cumulative Impact - Cleaner
+        # Cumulative Impact
         cumulative_change = ((implied_indices[-1] / LAST_KNOWN_CPI.get(category, 500.0)) - 1) * 100
         
         col_impact1, col_impact2, col_impact3 = st.columns([1, 2, 1])
@@ -195,9 +174,30 @@ def show_forecast():
                 </div>
             </div>
             """, unsafe_allow_html=True)
+            
+        st.markdown("<br><br>", unsafe_allow_html=True)
+
+        # Table Section
+        col_left, col_center, col_right = st.columns([1, 2, 1])
+        with col_center:
+            st.markdown("**Monthly Forecast Table**")
+            styled_df = forecast_df.style.format({
+                "MoM Change (%)": "{:+.2f}%",
+                "Implied Index": "{:,.2f}"
+            }).map(color_mom, subset=["MoM Change (%)"])
+            st.dataframe(styled_df, use_container_width=True, hide_index=True)
+
+        st.markdown("<br><br>", unsafe_allow_html=True)
+
+        # Chart Section (Now below the table as requested)
+        st.markdown("**Projected Price Trend**")
+        from app.colors import get_theme
+        theme = get_theme(st.session_state.dark_mode)
+        fig = create_forecast_chart(dates, result, category, theme)
+        st.plotly_chart(fig, use_container_width=True)
 
         # Download Section
-        st.markdown("<br><br>", unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
         
         col_dl1, col_dl2, col_dl3 = st.columns([1, 1, 1])
         with col_dl2:
