@@ -14,18 +14,18 @@ def create_forecast_chart(dates: pd.DatetimeIndex, mom_values: list, category: s
     """
     fig = go.Figure()
 
-    # Use primary color for the line (consistent with brand)
-    line_color = theme['primary']  # Changed from accent to primary
+    # Determine marker colors based on direction (Green for upward/positive, Red for downward/negative)
+    marker_colors = [theme['success'] if val > 0 else theme['danger'] for val in mom_values]
 
     fig.add_trace(go.Scatter(
         x=dates,
         y=mom_values,
         mode='lines+markers',
         name='MoM % Change',
-        line=dict(color=line_color, width=3),
+        line=dict(color=theme['primary'], width=3),
         marker=dict(
-            size=8,
-            color=line_color,
+            size=10,
+            color=marker_colors,
             line=dict(width=2, color=theme['surface'])
         ),
         hovertemplate="<b>%{x|%b %Y}</b><br>MoM: %{y:+.2f}%<extra></extra>"

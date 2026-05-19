@@ -142,7 +142,7 @@ def show_forecast():
         st.markdown("<br>", unsafe_allow_html=True)
 
         # Calculate Dataframes and Indices
-        dates = pd.date_range(datetime.now() + timedelta(days=30), periods=horizon, freq='ME')
+        dates = pd.date_range(datetime.now(), periods=horizon, freq='ME')
         
         current_index = LAST_KNOWN_CPI.get(category, 500.0)
         implied_indices = []
