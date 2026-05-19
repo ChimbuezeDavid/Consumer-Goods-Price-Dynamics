@@ -8,7 +8,6 @@ env/
 build/
 develop-eggs/
 dist/
-downloads/
 eggs/
 .eggs/
 lib/
@@ -21,7 +20,6 @@ wheels/
 .installed.cfg
 *.egg
 forecast/
-models/
 full_engineered.csv
 test_fe.csv
 test_raw.csv
