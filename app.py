@@ -20,7 +20,7 @@ st.set_page_config(**PAGE_CONFIG)
 current_theme = get_theme(st.session_state.dark_mode)
 st.markdown(get_custom_css(current_theme), unsafe_allow_html=True)
 
-# PWA + Remove "Manage app" button via JS (CSS alone cannot catch it)
+# PWA meta tags (these are HTML-only, no script needed here)
 st.markdown("""
 <link rel="manifest" href="/app/static/manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
@@ -29,43 +29,58 @@ st.markdown("""
 <meta name="apple-mobile-web-app-title" content="NairaPulse AI">
 <meta name="theme-color" content="#0F172A">
 <link rel="apple-touch-icon" href="/app/static/icon-192.png">
-<script>
-// Register service worker for PWA
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/app/static/sw.js');
-    });
-}
-
-// Aggressively remove the Streamlit "Manage app" button
-function removeManageApp() {
-    const selectors = [
-        '[data-testid="stAppDeployButton"]',
-        '.stDeployButton',
-        'a[href*="share.streamlit.io"]',
-        'button[title*="Manage"]',
-        'button[title*="manage"]',
-        '[class*="deployButton"]',
-        '[class*="manageApp"]',
-        '[class*="manage-app"]',
-    ];
-    selectors.forEach(sel => {
-        document.querySelectorAll(sel).forEach(el => el.remove());
-    });
-    // Also scan for any element whose text includes "Manage app"
-    document.querySelectorAll('button, a, div, span').forEach(el => {
-        if (el.textContent.trim() === 'Manage app') {
-            el.closest('[class]')?.remove() || el.remove();
-        }
-    });
-}
-
-// Run on load and repeatedly to catch dynamically injected elements
-removeManageApp();
-const observer = new MutationObserver(removeManageApp);
-observer.observe(document.body, { childList: true, subtree: true });
-</script>
 """, unsafe_allow_html=True)
+
+# JavaScript MUST be injected via components.html — st.markdown strips <script> tags
+import streamlit.components.v1 as components
+components.html("""
+<script>
+(function() {
+    function removeManageApp() {
+        const doc = window.parent.document;
+
+        // Target by data-testid
+        const selectors = [
+            '[data-testid="stAppDeployButton"]',
+            '[data-testid="stDeployButton"]',
+            '.stDeployButton',
+            '[class*="deployButton"]',
+            '[class*="manageApp"]',
+            '[class*="manage-app"]',
+            '[class*="ManageApp"]',
+        ];
+        selectors.forEach(sel => {
+            doc.querySelectorAll(sel).forEach(el => {
+                el.style.display = 'none';
+                el.remove();
+            });
+        });
+
+        // Fallback: remove any element whose visible text is exactly "Manage app"
+        doc.querySelectorAll('button, a, span, div').forEach(el => {
+            if (el.childElementCount === 0 && el.textContent.trim() === 'Manage app') {
+                let target = el;
+                // Walk up to remove the whole container widget
+                for (let i = 0; i < 5; i++) {
+                    if (target.parentElement) target = target.parentElement;
+                }
+                target.style.display = 'none';
+            }
+        });
+    }
+
+    // Register PWA service worker from parent context
+    if ('serviceWorker' in window.parent.navigator) {
+        window.parent.navigator.serviceWorker.register('/app/static/sw.js');
+    }
+
+    // Run immediately and watch for dynamic injections
+    removeManageApp();
+    const observer = new MutationObserver(removeManageApp);
+    observer.observe(window.parent.document.body, { childList: true, subtree: true });
+})();
+</script>
+""", height=0)
 
 # Import page functions
 from app.pages.home import show_home
