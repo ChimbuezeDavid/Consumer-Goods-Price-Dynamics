@@ -370,22 +370,27 @@ a:hover {{
     color: var(--np-muted);
 }}
 
-/* Mobile Responsive */
+/* Mobile Responsive - Enhanced Visibility */
 @media (max-width: 768px) {{
+    .stApp p, .stApp li {{
+        font-size: 1.05rem !important;
+        line-height: 1.6 !important;
+    }}
+
     .np-hero {{ 
         padding: 2.5rem 1.5rem; 
     }}
     
     .np-hero-title {{ 
-        font-size: 2.2rem; 
+        font-size: 2.5rem; 
     }}
     
     .np-hero-subtitle {{
-        font-size: 1.1rem;
+        font-size: 1.25rem;
     }}
     
     .np-section-header {{
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }}
     
     .np-card {{
@@ -393,8 +398,16 @@ a:hover {{
     }}
     
     .stButton > button {{
-        font-size: 0.85rem;
-        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+    }}
+    
+    .stat-value {{
+        font-size: 2.2rem !important;
+    }}
+    
+    [data-testid="stMetricValue"] {{
+        font-size: 2rem !important;
     }}
 }}
 
@@ -484,11 +497,27 @@ a:hover {{
 /* Hide Streamlit Default Elements & Cloud Viewer Badge */
 #MainMenu {{visibility: hidden;}}
 footer {{visibility: hidden;}}
-header {{visibility: hidden;}}
+header {{background: transparent !important;}}
+
+/* Ensure hamburger menu icon is visible on mobile */
+[data-testid="collapsedControl"],
+.stIconMaterial,
+[data-testid="collapsedControl"] svg {{
+    color: var(--np-text) !important;
+    fill: var(--np-text) !important;
+}}
 
 .viewerBadge_container__1QSob,
-[class^="viewerBadge_container"] {{
+.viewerBadge_container__3yXjG,
+[class^="viewerBadge_container"],
+[class*="viewerBadge"],
+#viewerBadge_container,
+.stDeployButton,
+[data-testid="stAppDeployButton"],
+iframe[src*="badge"] {{
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
 }}
 
 [data-testid="stToolbar"] {{
