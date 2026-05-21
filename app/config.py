@@ -21,7 +21,7 @@ PAGE_CONFIG = {
     "page_title": f"{BRAND_NAME} | Nigeria Price Dynamics",
     "page_icon": "📊",
     "layout": "wide",
-    "initial_sidebar_state": "expanded"
+    "initial_sidebar_state": "auto"
 }
 
 def get_custom_css(theme):
@@ -510,17 +510,26 @@ iframe[src*="badge"] {{
     opacity: 0 !important;
 }}
 
-[data-testid="stToolbar"] {{
+/* Hide specific toolbar children — NOT the toolbar itself (it contains the hamburger button) */
+[data-testid="stToolbarActions"] {{
+    display: none !important;
+}}
+[data-testid="stDecoration"] {{
     display: none !important;
 }}
 
-/* Ensure the hamburger menu is visible and styled properly */
+/* Hamburger button — always on top and clearly visible */
 [data-testid="collapsedControl"] {{
+    display: flex !important;
     visibility: visible !important;
     z-index: 9999 !important;
+    background-color: var(--np-surface) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
 }}
 
-[data-testid="collapsedControl"] svg {{
+[data-testid="collapsedControl"] svg,
+[data-testid="collapsedControl"] span {{
     color: var(--np-primary) !important;
     fill: var(--np-primary) !important;
 }}
