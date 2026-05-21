@@ -496,15 +496,6 @@ a:hover {{
 
 /* Hide Streamlit Default Elements & Cloud Viewer Badge */
 footer {{visibility: hidden;}}
-header {{background: transparent !important;}}
-
-/* Ensure hamburger menu icon is visible on mobile */
-[data-testid="collapsedControl"],
-.stIconMaterial,
-[data-testid="collapsedControl"] svg {{
-    color: var(--np-text) !important;
-    fill: var(--np-text) !important;
-}}
 
 .viewerBadge_container__1QSob,
 .viewerBadge_container__3yXjG,
@@ -523,8 +514,15 @@ iframe[src*="badge"] {{
     display: none !important;
 }}
 
-[data-testid="stDecoration"] {{
-    display: none !important;
+/* Ensure the hamburger menu is visible and styled properly */
+[data-testid="collapsedControl"] {{
+    visibility: visible !important;
+    z-index: 9999 !important;
+}}
+
+[data-testid="collapsedControl"] svg {{
+    color: var(--np-primary) !important;
+    fill: var(--np-primary) !important;
 }}
 
 /* Force Text Color on Streamlit Typography & Sidebar */

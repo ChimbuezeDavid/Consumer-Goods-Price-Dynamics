@@ -30,10 +30,10 @@ from app.pages.contact import show_contact
 if 'page' not in st.session_state:
     st.session_state.page = "home"
 
-home_page = st.Page(show_home, title="Home", icon="🏠", url_path="home", default=True)
-forecast_page = st.Page(show_forecast, title="Forecast Engine", icon="📈", url_path="forecast")
-about_page = st.Page(show_about, title="About", icon="📖", url_path="about")
-contact_page = st.Page(show_contact, title="Contact", icon="📞", url_path="contact")
+home_page = st.Page(show_home, title="Home", url_path="home", default=True)
+forecast_page = st.Page(show_forecast, title="Forecast Engine", url_path="forecast")
+about_page = st.Page(show_about, title="About", url_path="about")
+contact_page = st.Page(show_contact, title="Contact", url_path="contact")
 
 st.session_state.forecast_page = forecast_page
 pages = [home_page, forecast_page, about_page, contact_page]
