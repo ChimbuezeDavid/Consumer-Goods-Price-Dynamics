@@ -20,7 +20,7 @@ st.set_page_config(**PAGE_CONFIG)
 current_theme = get_theme(st.session_state.dark_mode)
 st.markdown(get_custom_css(current_theme), unsafe_allow_html=True)
 
-# PWA + Remove "Manage app" button via JS (CSS alone cannot catch it)
+# PWA meta tags (st.markdown handles HTML meta/link tags fine, just not <script>)
 st.markdown("""
 <link rel="manifest" href="/app/static/manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
@@ -29,6 +29,11 @@ st.markdown("""
 <meta name="apple-mobile-web-app-title" content="NairaPulse AI">
 <meta name="theme-color" content="#0F172A">
 <link rel="apple-touch-icon" href="/app/static/icon-192.png">
+""", unsafe_allow_html=True)
+
+# JavaScript must be injected via st.components.v1.html — st.markdown does NOT execute scripts
+import streamlit.components.v1 as components
+components.html("""
 <script>
 // Register service worker for PWA
 if ('serviceWorker' in navigator) {
@@ -37,35 +42,30 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Aggressively remove the Streamlit "Manage app" button
+// Remove the Streamlit "Manage app" button
 function removeManageApp() {
     const selectors = [
         '[data-testid="stAppDeployButton"]',
         '.stDeployButton',
         'a[href*="share.streamlit.io"]',
-        'button[title*="Manage"]',
-        'button[title*="manage"]',
         '[class*="deployButton"]',
         '[class*="manageApp"]',
         '[class*="manage-app"]',
     ];
     selectors.forEach(sel => {
-        document.querySelectorAll(sel).forEach(el => el.remove());
+        parent.document.querySelectorAll(sel).forEach(el => el.remove());
     });
-    // Also scan for any element whose text includes "Manage app"
-    document.querySelectorAll('button, a, div, span').forEach(el => {
+    parent.document.querySelectorAll('button, a, div, span').forEach(el => {
         if (el.textContent.trim() === 'Manage app') {
-            el.closest('[class]')?.remove() || el.remove();
+            (el.closest('[class]') || el).remove();
         }
     });
 }
-
-// Run on load and repeatedly to catch dynamically injected elements
 removeManageApp();
 const observer = new MutationObserver(removeManageApp);
-observer.observe(document.body, { childList: true, subtree: true });
+observer.observe(parent.document.body, { childList: true, subtree: true });
 </script>
-""", unsafe_allow_html=True)
+""", height=0)
 
 # Import page functions
 from app.pages.home import show_home
