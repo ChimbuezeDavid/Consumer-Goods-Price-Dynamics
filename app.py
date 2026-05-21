@@ -36,10 +36,10 @@ import streamlit.components.v1 as components
 components.html("""
 <script>
 (function() {
-    function removeManageApp() {
+    function removeStreamlitBadges() {
         const doc = window.parent.document;
 
-        // Target by data-testid
+        // --- Manage App button selectors ---
         const selectors = [
             '[data-testid="stAppDeployButton"]',
             '[data-testid="stDeployButton"]',
@@ -48,6 +48,12 @@ components.html("""
             '[class*="manageApp"]',
             '[class*="manage-app"]',
             '[class*="ManageApp"]',
+            // Viewer badge container (GitHub + Streamlit icons)
+            '[class*="viewerBadge"]',
+            '[class*="ViewerBadge"]',
+            '[class*="viewer-badge"]',
+            '[class*="StatusWidget"]',
+            '[class*="statusWidget"]',
         ];
         selectors.forEach(sel => {
             doc.querySelectorAll(sel).forEach(el => {
@@ -56,27 +62,61 @@ components.html("""
             });
         });
 
-        // Fallback: remove any element whose visible text is exactly "Manage app"
+        // --- Remove by text content ---
         doc.querySelectorAll('button, a, span, div').forEach(el => {
             if (el.childElementCount === 0 && el.textContent.trim() === 'Manage app') {
                 let target = el;
-                // Walk up to remove the whole container widget
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < 6; i++) {
                     if (target.parentElement) target = target.parentElement;
                 }
                 target.style.display = 'none';
+                target.remove();
+            }
+        });
+
+        // --- Remove GitHub avatar images (circular profile pics injected by Streamlit Cloud) ---
+        doc.querySelectorAll('img').forEach(img => {
+            const src = img.src || '';
+            if (
+                src.includes('avatars.githubusercontent.com') ||
+                src.includes('github.com') ||
+                src.includes('streamlit.io/badge') ||
+                src.includes('static.streamlit.io')
+            ) {
+                let target = img;
+                for (let i = 0; i < 6; i++) {
+                    if (target.parentElement) target = target.parentElement;
+                }
+                target.style.display = 'none';
+                target.remove();
+            }
+        });
+
+        // --- Remove fixed-position bottom-right overlays that contain only icons ---
+        doc.querySelectorAll('div[style*="position: fixed"], div[style*="position:fixed"]').forEach(el => {
+            const style = window.parent.getComputedStyle(el);
+            if (
+                style.position === 'fixed' &&
+                (style.bottom !== 'auto' || parseInt(style.bottom) < 100) &&
+                (style.right !== 'auto' || parseInt(style.right) < 100)
+            ) {
+                // Only remove if it doesn't contain nav or sidebar content
+                if (!el.querySelector('[data-testid="stSidebar"]') && 
+                    !el.querySelector('[data-testid="collapsedControl"]')) {
+                    el.style.display = 'none';
+                }
             }
         });
     }
 
-    // Register PWA service worker from parent context
+    // Register PWA service worker
     if ('serviceWorker' in window.parent.navigator) {
         window.parent.navigator.serviceWorker.register('/app/static/sw.js');
     }
 
-    // Run immediately and watch for dynamic injections
-    removeManageApp();
-    const observer = new MutationObserver(removeManageApp);
+    // Run immediately and observe future DOM changes
+    removeStreamlitBadges();
+    const observer = new MutationObserver(removeStreamlitBadges);
     observer.observe(window.parent.document.body, { childList: true, subtree: true });
 })();
 </script>
