@@ -495,7 +495,6 @@ a:hover {{
 }}
 
 /* Hide Streamlit Default Elements & Cloud Viewer Badge */
-#MainMenu {{visibility: hidden;}}
 footer {{visibility: hidden;}}
 header {{background: transparent !important;}}
 
