@@ -20,7 +20,7 @@ st.set_page_config(**PAGE_CONFIG)
 current_theme = get_theme(st.session_state.dark_mode)
 st.markdown(get_custom_css(current_theme), unsafe_allow_html=True)
 
-# PWA meta tags (these are HTML-only, no script needed here)
+# PWA + Remove "Manage app" button via JS (CSS alone cannot catch it)
 st.markdown("""
 <link rel="manifest" href="/app/static/manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
@@ -29,98 +29,43 @@ st.markdown("""
 <meta name="apple-mobile-web-app-title" content="NairaPulse AI">
 <meta name="theme-color" content="#0F172A">
 <link rel="apple-touch-icon" href="/app/static/icon-192.png">
-""", unsafe_allow_html=True)
-
-# JavaScript MUST be injected via components.html — st.markdown strips <script> tags
-import streamlit.components.v1 as components
-components.html("""
 <script>
-(function() {
-    function removeStreamlitBadges() {
-        const doc = window.parent.document;
+// Register service worker for PWA
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/app/static/sw.js');
+    });
+}
 
-        // --- Manage App button selectors ---
-        const selectors = [
-            '[data-testid="stAppDeployButton"]',
-            '[data-testid="stDeployButton"]',
-            '.stDeployButton',
-            '[class*="deployButton"]',
-            '[class*="manageApp"]',
-            '[class*="manage-app"]',
-            '[class*="ManageApp"]',
-            // Viewer badge container (GitHub + Streamlit icons)
-            '[class*="viewerBadge"]',
-            '[class*="ViewerBadge"]',
-            '[class*="viewer-badge"]',
-            '[class*="StatusWidget"]',
-            '[class*="statusWidget"]',
-        ];
-        selectors.forEach(sel => {
-            doc.querySelectorAll(sel).forEach(el => {
-                el.style.display = 'none';
-                el.remove();
-            });
-        });
+// Aggressively remove the Streamlit "Manage app" button
+function removeManageApp() {
+    const selectors = [
+        '[data-testid="stAppDeployButton"]',
+        '.stDeployButton',
+        'a[href*="share.streamlit.io"]',
+        'button[title*="Manage"]',
+        'button[title*="manage"]',
+        '[class*="deployButton"]',
+        '[class*="manageApp"]',
+        '[class*="manage-app"]',
+    ];
+    selectors.forEach(sel => {
+        document.querySelectorAll(sel).forEach(el => el.remove());
+    });
+    // Also scan for any element whose text includes "Manage app"
+    document.querySelectorAll('button, a, div, span').forEach(el => {
+        if (el.textContent.trim() === 'Manage app') {
+            el.closest('[class]')?.remove() || el.remove();
+        }
+    });
+}
 
-        // --- Remove by text content ---
-        doc.querySelectorAll('button, a, span, div').forEach(el => {
-            if (el.childElementCount === 0 && el.textContent.trim() === 'Manage app') {
-                let target = el;
-                for (let i = 0; i < 6; i++) {
-                    if (target.parentElement) target = target.parentElement;
-                }
-                target.style.display = 'none';
-                target.remove();
-            }
-        });
-
-        // --- Remove GitHub avatar images (circular profile pics injected by Streamlit Cloud) ---
-        doc.querySelectorAll('img').forEach(img => {
-            const src = img.src || '';
-            if (
-                src.includes('avatars.githubusercontent.com') ||
-                src.includes('github.com') ||
-                src.includes('streamlit.io/badge') ||
-                src.includes('static.streamlit.io')
-            ) {
-                let target = img;
-                for (let i = 0; i < 6; i++) {
-                    if (target.parentElement) target = target.parentElement;
-                }
-                target.style.display = 'none';
-                target.remove();
-            }
-        });
-
-        // --- Remove fixed-position bottom-right overlays that contain only icons ---
-        doc.querySelectorAll('div[style*="position: fixed"], div[style*="position:fixed"]').forEach(el => {
-            const style = window.parent.getComputedStyle(el);
-            if (
-                style.position === 'fixed' &&
-                (style.bottom !== 'auto' || parseInt(style.bottom) < 100) &&
-                (style.right !== 'auto' || parseInt(style.right) < 100)
-            ) {
-                // Only remove if it doesn't contain nav or sidebar content
-                if (!el.querySelector('[data-testid="stSidebar"]') && 
-                    !el.querySelector('[data-testid="collapsedControl"]')) {
-                    el.style.display = 'none';
-                }
-            }
-        });
-    }
-
-    // Register PWA service worker
-    if ('serviceWorker' in window.parent.navigator) {
-        window.parent.navigator.serviceWorker.register('/app/static/sw.js');
-    }
-
-    // Run immediately and observe future DOM changes
-    removeStreamlitBadges();
-    const observer = new MutationObserver(removeStreamlitBadges);
-    observer.observe(window.parent.document.body, { childList: true, subtree: true });
-})();
+// Run on load and repeatedly to catch dynamically injected elements
+removeManageApp();
+const observer = new MutationObserver(removeManageApp);
+observer.observe(document.body, { childList: true, subtree: true });
 </script>
-""", height=0)
+""", unsafe_allow_html=True)
 
 # Import page functions
 from app.pages.home import show_home
