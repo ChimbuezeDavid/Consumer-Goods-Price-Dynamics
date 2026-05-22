@@ -26,6 +26,18 @@ hide_streamlit_style = """
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     #GithubIcon {visibility: hidden;}
+
+    /* Modern Streamlit Cloud elements (toolbar, header, status, viewer badge with crown/profile) */
+    div[data-testid="stToolbar"] {visibility: hidden; height: 0%; position: fixed;}
+    div[data-testid="stDecoration"] {visibility: hidden; height: 0%; position: fixed;}
+    div[data-testid="stStatusWidget"] {visibility: hidden; height: 0%; position: fixed;}
+    header {visibility: hidden; height: 0%;}
+
+    /* Streamlit Community Cloud viewer badge (bottom-right profile + crown button) */
+    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob,
+    .styles_viewerBadge__1yB5_, .viewerBadge_link__1S137,
+    .viewerBadge_text__1JaDK {display: none !important;}
+    </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
