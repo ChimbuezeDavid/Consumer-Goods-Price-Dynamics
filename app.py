@@ -20,23 +20,56 @@ st.set_page_config(**PAGE_CONFIG)
 current_theme = get_theme(st.session_state.dark_mode)
 st.markdown(get_custom_css(current_theme), unsafe_allow_html=True)
 
-# Hide Streamlit + GitHub watermarks (footer, menu, GitHub icon, Cloud badge)
+# Hide Streamlit watermarks
 hide_streamlit_style = """
     <style>
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     #GithubIcon {visibility: hidden;}
 
-    /* Modern Streamlit Cloud elements (toolbar, header, status, viewer badge with crown/profile) */
-    div[data-testid="stToolbar"] {visibility: hidden; height: 0%; position: fixed;}
-    div[data-testid="stDecoration"] {visibility: hidden; height: 0%; position: fixed;}
-    div[data-testid="stStatusWidget"] {visibility: hidden; height: 0%; position: fixed;}
-    header {visibility: hidden; height: 0%;}
+    .viewerBadge_container__1QSob,
+    .viewerBadge_container__3yXjG,
+    [class^="viewerBadge_container"],
+    [class*="viewerBadge"],
+    #viewerBadge_container,
+    .stDeployButton,
+    [data-testid="stAppDeployButton"],
+    iframe[src*="badge"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
 
-    /* Streamlit Community Cloud viewer badge (bottom-right profile + crown button) */
-    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob,
-    .styles_viewerBadge__1yB5_, .viewerBadge_link__1S137,
-    .viewerBadge_text__1JaDK {display: none !important;}
+    /* Hide toolbar chrome & decoration — NOT the header wrapper itself */
+    [data-testid="stToolbarActions"] {
+        display: none !important;
+    }
+    [data-testid="stDecoration"] {
+        display: none !important;
+    }
+    [data-testid="stStatusWidget"] {
+        display: none !important;
+    }
+
+    /* Keep header transparent so hamburger button remains visible & clickable */
+    header[data-testid="stHeader"] {
+        background: transparent !important;
+        pointer-events: none !important;
+    }
+
+    /* But re-enable pointer events on the hamburger button itself */
+    [data-testid="collapsedControl"] {
+        display: flex !important;
+        visibility: visible !important;
+        pointer-events: all !important;
+        z-index: 9999 !important;
+    }
+
+    [data-testid="collapsedControl"] svg,
+    [data-testid="collapsedControl"] span {
+        color: var(--np-primary) !important;
+        fill: var(--np-primary) !important;
+    }
     </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)

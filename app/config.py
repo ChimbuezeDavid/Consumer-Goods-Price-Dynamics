@@ -510,22 +510,29 @@ iframe[src*="badge"] {{
     opacity: 0 !important;
 }}
 
-/* Hide specific toolbar children — NOT the toolbar itself (it contains the hamburger button) */
+/* Hide specific toolbar chrome — NOT the header/toolbar wrapper itself */
 [data-testid="stToolbarActions"] {{
     display: none !important;
 }}
 [data-testid="stDecoration"] {{
     display: none !important;
 }}
+[data-testid="stStatusWidget"] {{
+    display: none !important;
+}}
 
-/* Hamburger button — always on top and clearly visible */
+/* Keep header transparent but keep its layout so hamburger stays clickable */
+header[data-testid="stHeader"] {{
+    background: transparent !important;
+    pointer-events: none !important;
+}}
+
+/* Re-enable pointer events only on the hamburger button */
 [data-testid="collapsedControl"] {{
     display: flex !important;
     visibility: visible !important;
+    pointer-events: all !important;
     z-index: 9999 !important;
-    background-color: var(--np-surface) !important;
-    border-radius: 8px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
 }}
 
 [data-testid="collapsedControl"] svg,
