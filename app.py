@@ -25,19 +25,12 @@ import streamlit as st
 
 hide_st_style = """
             <style>
-            #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
-hide_streamlit_style = """
-            <style>
-            [data-testid="stAppViewContainer"] > div:first-child {
-                padding-top: 0rem;
-            }
-            </style>
-            """
+
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # PWA meta tags (st.markdown handles HTML meta/link tags fine, just not <script>)
