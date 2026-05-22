@@ -20,6 +20,15 @@ st.set_page_config(**PAGE_CONFIG)
 current_theme = get_theme(st.session_state.dark_mode)
 st.markdown(get_custom_css(current_theme), unsafe_allow_html=True)
 
+# Hide Streamlit + GitHub watermarks (footer, menu, GitHub icon, Cloud badge)
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    #GithubIcon {visibility: hidden;}
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 # PWA meta tags (st.markdown handles HTML meta/link tags fine, just not <script>)
 st.markdown("""
 <link rel="manifest" href="/app/static/manifest.json">
