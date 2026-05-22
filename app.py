@@ -21,16 +21,24 @@ current_theme = get_theme(st.session_state.dark_mode)
 st.markdown(get_custom_css(current_theme), unsafe_allow_html=True)
 
 # Hide Streamlit + GitHub watermarks (footer, menu, GitHub icon, Cloud badge)
-import streamlit as st
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    #GithubIcon {visibility: hidden;}
 
-hide_st_style = """
-            <style>
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
+    /* Modern Streamlit Cloud elements (toolbar, header, status, viewer badge with crown/profile) */
+    div[data-testid="stToolbar"] {visibility: hidden; height: 0%; position: fixed;}
+    div[data-testid="stDecoration"] {visibility: hidden; height: 0%; position: fixed;}
+    div[data-testid="stStatusWidget"] {visibility: hidden; height: 0%; position: fixed;}
+    header {visibility: hidden; height: 0%;}
 
+    /* Streamlit Community Cloud viewer badge (bottom-right profile + crown button) */
+    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob,
+    .styles_viewerBadge__1yB5_, .viewerBadge_link__1S137,
+    .viewerBadge_text__1JaDK {display: none !important;}
+    </style>
+"""
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # PWA meta tags (st.markdown handles HTML meta/link tags fine, just not <script>)
