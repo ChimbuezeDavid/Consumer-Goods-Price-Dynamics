@@ -495,7 +495,9 @@ a:hover {{
 }}
 
 /* Hide Streamlit Default Elements & Cloud Viewer Badge */
-footer {{visibility: hidden;}}
+#MainMenu {{visibility: hidden !important;}}
+#GithubIcon {{visibility: hidden !important;}}
+footer {{visibility: hidden !important;}}
 
 .viewerBadge_container__1QSob,
 .viewerBadge_container__3yXjG,

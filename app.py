@@ -89,14 +89,33 @@ st.markdown("""
 import streamlit.components.v1 as components
 components.html("""
 <script>
-// Register service worker for PWA
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/app/static/sw.js');
-    });
+// 1. Automatically redirect to the embedded/chromeless version if accessed directly on the standalone URL
+try {
+    if (parent && parent.location && !parent.location.search.includes('embed=true')) {
+        const url = new URL(parent.location.href);
+        url.searchParams.set('embed', 'true');
+        parent.location.replace(url.href);
+    }
+} catch (e) {
+    console.warn("Could not check/redirect parent location:", e);
 }
 
-// Remove the Streamlit "Manage app" button
+// 2. Register service worker for PWA on the parent context (fallback to local iframe)
+try {
+    if (parent && 'serviceWorker' in parent.navigator) {
+        parent.navigator.serviceWorker.register('/app/static/sw.js')
+            .then(reg => console.log('ServiceWorker registered on parent:', reg.scope))
+            .catch(err => console.error('ServiceWorker registration failed on parent:', err));
+    } else if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/app/static/sw.js');
+    }
+} catch (e) {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/app/static/sw.js');
+    }
+}
+
+// 3. Remove the Streamlit "Manage app" button / badge dynamically
 function removeManageApp() {
     const selectors = [
         '[data-testid="stAppDeployButton"]',
@@ -106,18 +125,43 @@ function removeManageApp() {
         '[class*="manageApp"]',
         '[class*="manage-app"]',
     ];
+    // Clear in parent window
+    try {
+        if (parent && parent.document) {
+            selectors.forEach(sel => {
+                parent.document.querySelectorAll(sel).forEach(el => el.remove());
+            });
+            parent.document.querySelectorAll('button, a, div, span').forEach(el => {
+                if (el.textContent.trim() === 'Manage app') {
+                    (el.closest('[class]') || el).remove();
+                }
+            });
+        }
+    } catch (e) {}
+    // Clear in local iframe (fallback)
     selectors.forEach(sel => {
-        parent.document.querySelectorAll(sel).forEach(el => el.remove());
+        document.querySelectorAll(sel).forEach(el => el.remove());
     });
-    parent.document.querySelectorAll('button, a, div, span').forEach(el => {
+    document.querySelectorAll('button, a, div, span').forEach(el => {
         if (el.textContent.trim() === 'Manage app') {
             (el.closest('[class]') || el).remove();
         }
     });
 }
-removeManageApp();
-const observer = new MutationObserver(removeManageApp);
-observer.observe(parent.document.body, { childList: true, subtree: true });
+
+try {
+    removeManageApp();
+    if (parent && parent.document && parent.document.body) {
+        const observer = new MutationObserver(removeManageApp);
+        observer.observe(parent.document.body, { childList: true, subtree: true });
+    } else {
+        const observer = new MutationObserver(removeManageApp);
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+} catch (e) {
+    const observer = new MutationObserver(removeManageApp);
+    observer.observe(document.body, { childList: true, subtree: true });
+}
 </script>
 """, height=0)
 
