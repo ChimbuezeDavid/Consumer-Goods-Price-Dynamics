@@ -100,7 +100,67 @@ try {
     console.warn("Could not check/redirect parent location:", e);
 }
 
-// 2. Register service worker for PWA on the parent context (fallback to local iframe)
+// 2. Setup NairaPulse AI PWA configurations on the parent document (to override Streamlit's default PWA metadata)
+try {
+    if (parent && parent.document) {
+        const pDoc = parent.document;
+
+        // Update top-level page title
+        pDoc.title = "NairaPulse AI | Nigeria Price Dynamics";
+
+        // Helper to upsert meta tags
+        const upsertMeta = (name, content, isProp = false) => {
+            const attr = isProp ? 'property' : 'name';
+            let el = pDoc.querySelector(`meta[${attr}="${name}"]`);
+            if (!el) {
+                el = pDoc.createElement('meta');
+                el.setAttribute(attr, name);
+                pDoc.head.appendChild(el);
+            }
+            el.setAttribute('content', content);
+        };
+
+        // Helper to upsert link tags
+        const upsertLink = (rel, href, attrs = {}) => {
+            let el = pDoc.querySelector(`link[rel="${rel}"]`);
+            if (!el) {
+                el = pDoc.createElement('link');
+                el.setAttribute('rel', rel);
+                pDoc.head.appendChild(el);
+            }
+            el.setAttribute('href', href);
+            for (const [k, v] of Object.entries(attrs)) {
+                el.setAttribute(k, v);
+            }
+        };
+
+        // Set PWA metadata in parent window
+        upsertMeta('theme-color', '#0F172A');
+        upsertMeta('mobile-web-app-capable', 'yes');
+        upsertMeta('apple-mobile-web-app-capable', 'yes');
+        upsertMeta('apple-mobile-web-app-status-bar-style', 'black-translucent');
+        upsertMeta('apple-mobile-web-app-title', 'NairaPulse AI');
+        upsertMeta('application-name', 'NairaPulse AI');
+
+        // Override/Set manifest & apple-touch-icon
+        upsertLink('manifest', '/app/static/manifest.json');
+        upsertLink('apple-touch-icon', '/app/static/icon-192.png');
+
+        // Update favicons and other icon links
+        const favicons = pDoc.querySelectorAll('link[rel*="icon"]');
+        if (favicons.length > 0) {
+            favicons.forEach(fav => fav.setAttribute('href', '/app/static/icon-192.png'));
+        } else {
+            upsertLink('icon', '/app/static/icon-192.png', { type: 'image/png' });
+        }
+        
+        console.log('NairaPulse PWA configuration successfully applied to parent document head.');
+    }
+} catch (e) {
+    console.warn("Could not setup NairaPulse PWA on parent document context (cross-origin iframe or browser restriction):", e);
+}
+
+// 3. Register service worker for PWA on the parent context (fallback to local iframe)
 try {
     if (parent && 'serviceWorker' in parent.navigator) {
         parent.navigator.serviceWorker.register('/app/static/sw.js')
@@ -115,7 +175,7 @@ try {
     }
 }
 
-// 3. Remove the Streamlit "Manage app" button / badge dynamically
+// 4. Remove the Streamlit "Manage app" button / badge dynamically
 function removeManageApp() {
     const selectors = [
         '[data-testid="stAppDeployButton"]',
