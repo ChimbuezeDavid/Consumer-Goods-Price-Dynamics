@@ -262,7 +262,7 @@ with st.sidebar:
     )
 
     # Dark Mode Toggle
-    dark_mode = st.toggle("🌙 Dark Mode", value=st.session_state.dark_mode)
+    dark_mode = st.toggle("Dark Mode", value=st.session_state.dark_mode)
     if dark_mode != st.session_state.dark_mode:
         st.session_state.dark_mode = dark_mode
         st.rerun()

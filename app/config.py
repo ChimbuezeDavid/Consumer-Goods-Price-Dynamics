@@ -27,6 +27,17 @@ PAGE_CONFIG = {
 def get_custom_css(theme):
     return f"""<style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/icofont@1.0.0/dist/icofont.min.css');
+
+/* IcoFont icon sizing utilities */
+.np-icon-sm  {{ font-size: 1.1rem; }}
+.np-icon-md  {{ font-size: 1.6rem; }}
+.np-icon-lg  {{ font-size: 2.2rem; }}
+.np-icon-xl  {{ font-size: 3rem;   }}
+.np-icon-primary {{ color: var(--np-primary); }}
+.np-icon-accent  {{ color: var(--np-accent);  }}
+.np-icon-muted   {{ color: var(--np-muted);   }}
+.np-icon-white   {{ color: #ffffff;            }}
 
 :root {{
     --np-primary: {theme['primary']};

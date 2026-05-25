@@ -15,11 +15,11 @@ def render_hero(title: str, subtitle: str):
     </div>
     """, unsafe_allow_html=True)
 
-def render_section_header(icon: str, title: str):
-    """Consistent section headers."""
+def render_section_header(icon_html: str, title: str):
+    """Consistent section headers. icon_html can be an IcoFont <i> tag or plain text."""
     st.markdown(f"""
     <div class="np-section-header">
-        <span style="font-size:1.9rem;">{icon}</span> {title}
+        <span style="font-size:1.9rem; display:inline-flex; align-items:center;">{icon_html}</span> {title}
     </div>
     """, unsafe_allow_html=True)
 
