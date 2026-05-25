@@ -378,6 +378,13 @@ Undergraduate Research Project, Department of Computing,
 Afe Babalola University, Ado-Ekiti, Nigeria.
     """, language="text")
 
+    st.markdown("**IEEE Format:**")
+    st.code("""
+C. David, "Development of a Stacked Ensemble Model for Forecasting Price
+Dynamics of Consumer Goods in Nigeria," Undergraduate Research Project,
+Dept. Comput., Afe Babalola Univ., Ado-Ekiti, Nigeria, 2026.
+    """, language="text")
+
     st.markdown("**BibTeX:**")
     st.code("""
 @misc{david2026stackedensemble,
