@@ -295,29 +295,53 @@ section[data-testid="stSidebar"] > div {{
 
 /* Tabs */
 .stTabs [data-baseweb="tab-list"] {{
-    gap: 0.5rem;
-    background-color: var(--np-surface);
-    padding: 0.5rem;
-    border-radius: 12px;
+    gap: 1.5rem;
+    background-color: transparent;
+    padding: 0;
+    border-bottom: 2px solid var(--np-border);
+    border-radius: 0;
 }}
 
 .stTabs [data-baseweb="tab"] {{
-    height: 50px;
-    background-color: transparent;
-    border-radius: 10px;
-    color: var(--np-muted);
+    height: auto;
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 3px solid transparent !important;
+    color: var(--np-muted) !important;
     font-weight: 600;
-    padding: 0 1.5rem;
+    padding: 0.8rem 0.5rem !important;
+    margin: 0;
+    transition: all 0.2s ease;
+}}
+
+.stTabs [data-baseweb="tab"] div,
+.stTabs [data-baseweb="tab"] span,
+.stTabs [data-baseweb="tab"] p {{
+    color: var(--np-muted) !important;
     transition: all 0.2s ease;
 }}
 
 .stTabs [data-baseweb="tab"]:hover {{
-    background-color: var(--np-sidebar);
+    background-color: transparent !important;
+    color: var(--np-primary) !important;
+}}
+
+.stTabs [data-baseweb="tab"]:hover div,
+.stTabs [data-baseweb="tab"]:hover span,
+.stTabs [data-baseweb="tab"]:hover p {{
+    color: var(--np-primary) !important;
 }}
 
 .stTabs [aria-selected="true"] {{
-    background-color: var(--np-primary) !important;
-    color: white !important;
+    background-color: transparent !important;
+    border-bottom: 3px solid var(--np-accent) !important;
+    color: var(--np-accent) !important;
+}}
+
+.stTabs [aria-selected="true"] div,
+.stTabs [aria-selected="true"] span,
+.stTabs [aria-selected="true"] p {{
+    color: var(--np-accent) !important;
 }}
 
 /* Info/Success/Warning/Error Boxes */
