@@ -145,11 +145,11 @@ def show_about():
                 padding:2.5rem; border-radius:16px; color:white; text-align:center;">
         <i class="icofont-flash" style="font-size:2rem; color:white; margin-bottom:0.5rem; display:block;"></i>
         <h3 style="color:white; margin:0 0 1rem 0;">XGBoost Meta-Learner</h3>
-        <p style="opacity:0.95; margin:0; font-size:1.05rem; max-width:600px; margin:0 auto;">
+        <div style="opacity:0.95; margin:0 auto; font-size:1.05rem; max-width:600px; color:white;">
             A gradient-boosted meta-learner trained on the out-of-fold predictions of all three base 
             models, learning their optimal combination weights. This final layer consistently 
             outperforms any single base model in held-out evaluation.
-        </p>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 

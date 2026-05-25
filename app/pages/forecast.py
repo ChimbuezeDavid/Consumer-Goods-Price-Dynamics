@@ -230,11 +230,11 @@ def show_forecast():
             <h3 style="color:var(--np-primary); margin-bottom:1.5rem;">
                 Configure Parameters &amp; Run Forecast
             </h3>
-            <p style="color:var(--np-muted); font-size:1.1rem; max-width:600px; margin:0 auto; line-height:1.7;">
+            <div style="color:var(--np-muted); font-size:1.1rem; max-width:600px; margin:0 auto; line-height:1.7;">
                 Use the sidebar controls to set your macroeconomic assumptions: exchange rate, 
                 oil price, headline inflation. Then click <strong>Run Forecast</strong> to generate 
                 a detailed month-by-month price outlook.
-            </p>
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
