@@ -65,55 +65,32 @@ def show_home():
         "Forecast Categories"
     )
 
-    c1, c2, c3 = st.columns(3, gap="large")
-
-    with c1:
-        st.markdown("""
-        <div class="np-card" style="text-align:center; height:100%;">
-            <div style="margin-bottom:1.2rem;">
-                <i class="icofont-food-basket np-icon-primary" style="font-size:3rem;"></i>
-            </div>
-            <h3 style="color:var(--np-primary); margin-bottom:1rem;">Food</h3>
-            <div style="color:var(--np-muted); line-height:1.9; font-size:0.95rem;">
-                Largest CPI component<br>
-                Driven by FX &amp; harvest cycles<br>
-                Typical MoM range: &minus;3% to +8%<br>
-                <em style="font-size:0.85rem;">~50% of household budgets</em>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with c2:
-        st.markdown("""
-        <div class="np-card" style="text-align:center; height:100%;">
-            <div style="margin-bottom:1.2rem;">
-                <i class="icofont-car np-icon-primary" style="font-size:3rem;"></i>
-            </div>
-            <h3 style="color:var(--np-primary); margin-bottom:1rem;">Transport</h3>
-            <div style="color:var(--np-muted); line-height:1.9; font-size:0.95rem;">
-                Energy price channel<br>
-                Tracks global crude oil benchmarks<br>
-                Typical MoM range: &minus;2% to +6%<br>
-                <em style="font-size:0.85rem;">~12% of household budgets</em>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with c3:
-        st.markdown("""
-        <div class="np-card" style="text-align:center; height:100%;">
-            <div style="margin-bottom:1.2rem;">
-                <i class="icofont-safety np-icon-primary" style="font-size:3rem;"></i>
-            </div>
-            <h3 style="color:var(--np-primary); margin-bottom:1rem;">Clothing &amp; Footwear</h3>
-            <div style="color:var(--np-muted); line-height:1.9; font-size:0.95rem;">
-                Import-dependent sector<br>
-                Follows naira exchange rate<br>
-                Typical MoM range: &minus;1% to +4%<br>
-                <em style="font-size:0.85rem;">~6% of household budgets</em>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+    category_cards_html = (
+        '<div class="category-grid">'
+        '<div class="np-card" style="text-align:center; height:100%;">'
+        '<div style="margin-bottom:1.2rem;"><i class="icofont-food-basket np-icon-primary" style="font-size:3rem;"></i></div>'
+        '<h3 style="color:var(--np-primary); margin-bottom:1rem; margin-top:0;">Food</h3>'
+        '<div style="color:var(--np-muted); line-height:1.9; font-size:0.95rem;">'
+        'Largest CPI component<br>Driven by FX &amp; harvest cycles<br>Typical MoM range: &minus;3% to +8%<br><em style="font-size:0.85rem;">~50% of household budgets</em>'
+        '</div>'
+        '</div>'
+        '<div class="np-card" style="text-align:center; height:100%;">'
+        '<div style="margin-bottom:1.2rem;"><i class="icofont-car np-icon-primary" style="font-size:3rem;"></i></div>'
+        '<h3 style="color:var(--np-primary); margin-bottom:1rem; margin-top:0;">Transport</h3>'
+        '<div style="color:var(--np-muted); line-height:1.9; font-size:0.95rem;">'
+        'Energy price channel<br>Tracks global crude oil benchmarks<br>Typical MoM range: &minus;2% to +6%<br><em style="font-size:0.85rem;">~12% of household budgets</em>'
+        '</div>'
+        '</div>'
+        '<div class="np-card" style="text-align:center; height:100%;">'
+        '<div style="margin-bottom:1.2rem;"><i class="icofont-hanger np-icon-primary" style="font-size:3rem;"></i></div>'
+        '<h3 style="color:var(--np-primary); margin-bottom:1rem; margin-top:0;">Clothing &amp; Footwear</h3>'
+        '<div style="color:var(--np-muted); line-height:1.9; font-size:0.95rem;">'
+        'Import-dependent sector<br>Follows naira exchange rate<br>Typical MoM range: &minus;1% to +4%<br><em style="font-size:0.85rem;">~6% of household budgets</em>'
+        '</div>'
+        '</div>'
+        '</div>'
+    )
+    st.markdown(category_cards_html, unsafe_allow_html=True)
 
     st.markdown("<br><br>", unsafe_allow_html=True)
 

@@ -476,6 +476,21 @@ a:hover {{
     }}
 }}
 
+/* Category Grid */
+.category-grid {{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    margin: 1.5rem 0;
+}}
+
+@media (max-width: 992px) {{
+    .category-grid {{
+        grid-template-columns: 1fr;
+    }}
+}}
+
 .stat-card {{
     background: var(--np-surface);
     border: 1px solid var(--np-border);
