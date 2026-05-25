@@ -31,165 +31,227 @@ def show_contact():
     col1, col2 = st.columns([1.65, 1], gap="large")
 
     # -----------------------------------------------------------------------
-    # LEFT COLUMN - Contact Form
+    # LEFT COLUMN - Contact & Feedback Forms
     # -----------------------------------------------------------------------
     with col1:
         render_section_header(
-            '<i class="icofont-email np-icon-primary"></i>',
-            "Send a Message"
+            '<i class="icofont-chat np-icon-primary"></i>',
+            "Get in Touch"
         )
 
-        st.markdown("""
-        Whether you have a question about the forecasting methodology, spotted an issue, 
-        or are interested in academic collaboration or data exchange, use the form below. 
-        Submissions are delivered directly to the research team.
-        """)
+        contact_tabs = st.tabs(["Send a Message", "Rate & Leave Feedback"])
 
-        with st.form("contact_form", clear_on_submit=True):
-            name = st.text_input(
-                "Full Name *",
-                placeholder="e.g. Adaeze Okonkwo or James Robertson",
-                help="Your full name"
-            )
+        with contact_tabs[0]:
+            st.markdown("""
+            Whether you have a question about the forecasting methodology, spotted an issue, 
+            or are interested in academic collaboration or data exchange, use the form below. 
+            Submissions are delivered directly to the research team.
+            """)
 
-            email = st.text_input(
-                "Email Address *",
-                placeholder="you@example.com",
-                help="We will reply to this address within 24 to 48 hours"
-            )
+            with st.form("contact_form", clear_on_submit=True):
+                name = st.text_input(
+                    "Full Name *",
+                    placeholder="e.g. Adaeze Okonkwo or James Robertson",
+                    help="Your full name"
+                )
 
-            topic = st.selectbox(
-                "Topic *",
-                [
-                    "General Inquiry",
-                    "Research Collaboration",
-                    "Academic Partnership",
-                    "Technical Feedback",
-                    "Bug Report",
-                    "Feature Suggestion",
-                    "Data Request / Sharing",
-                    "Media / Press Inquiry",
-                ],
-                help="Select the category that best describes your message"
-            )
+                email = st.text_input(
+                    "Email Address *",
+                    placeholder="you@example.com",
+                    help="We will reply to this address within 24 to 48 hours"
+                )
 
-            message = st.text_area(
-                "Your Message *",
-                height=200,
-                placeholder="Describe your inquiry in as much detail as you wish...",
-                help="Please be as specific as possible; it helps us respond more usefully."
-            )
+                topic = st.selectbox(
+                    "Topic *",
+                    [
+                        "General Inquiry",
+                        "Research Collaboration",
+                        "Academic Partnership",
+                        "Technical Feedback",
+                        "Bug Report",
+                        "Feature Suggestion",
+                        "Data Request / Sharing",
+                        "Media / Press Inquiry",
+                    ],
+                    help="Select the category that best describes your message"
+                )
 
-            priority = st.radio(
-                "Priority",
-                ["Standard", "High", "Urgent"],
-                horizontal=True,
-                help="Mark as High or Urgent only for time-sensitive matters"
-            )
+                message = st.text_area(
+                    "Your Message *",
+                    height=200,
+                    placeholder="Describe your inquiry in as much detail as you wish...",
+                    help="Please be as specific as possible; it helps us respond more usefully."
+                )
 
-            newsletter = st.checkbox(
-                "Notify me of major model updates and new research outputs (max 2 emails/month)",
-            )
+                priority = st.radio(
+                    "Priority",
+                    ["Standard", "High", "Urgent"],
+                    horizontal=True,
+                    help="Mark as High or Urgent only for time-sensitive matters"
+                )
 
-            submitted = st.form_submit_button(
-                "SEND MESSAGE",
-                use_container_width=True,
-                type="primary"
-            )
+                newsletter = st.checkbox(
+                    "Notify me of major model updates and new research outputs (max 2 emails/month)",
+                )
 
-            if submitted:
-                # --- Client-side validation ---
-                errors = []
-                if not name.strip():
-                    errors.append("Full name is required.")
-                if not email.strip():
-                    errors.append("Email address is required.")
-                elif not _is_valid_email(email):
-                    errors.append("Please enter a valid email address (e.g. you@example.com).")
-                if not message.strip():
-                    errors.append("Message body cannot be empty.")
+                submitted = st.form_submit_button(
+                    "SEND MESSAGE",
+                    use_container_width=True,
+                    type="primary"
+                )
 
-                if errors:
-                    for err in errors:
-                        st.error(f"  {err}")
-                else:
-                    # -------------------------------------------------------
-                    # FORM DELIVERY - FormSubmit.co (no credentials required)
-                    # Injects a hidden HTML form and submits it programmatically
-                    # to deliver the message to CONTACT_EMAIL.
-                    # -------------------------------------------------------
-                    newsletter_str = "Yes - add to mailing list" if newsletter else "No"
-                    form_html = f"""
-                    <form id="nairapulse-contact"
-                          action="https://formsubmit.co/{CONTACT_EMAIL}"
-                          method="POST"
-                          style="display:none;">
-                        <input type="hidden" name="_captcha"     value="false">
-                        <input type="hidden" name="_template"    value="table">
-                        <input type="hidden" name="_subject"     value="NairaPulse AI - Contact Form: {topic} ({priority})">
-                        <input type="hidden" name="Name"         value="{name}">
-                        <input type="hidden" name="Email"        value="{email}">
-                        <input type="hidden" name="Topic"        value="{topic}">
-                        <input type="hidden" name="Priority"     value="{priority}">
-                        <input type="hidden" name="Newsletter"   value="{newsletter_str}">
-                        <input type="hidden" name="Message"      value="{message.replace(chr(10), ' | ')}">
-                    </form>
-                    <script>
-                        document.getElementById("nairapulse-contact").submit();
-                    </script>
-                    """
-                    components.html(form_html, height=0)
+                if submitted:
+                    # --- Client-side validation ---
+                    errors = []
+                    if not name.strip():
+                        errors.append("Full name is required.")
+                    if not email.strip():
+                        errors.append("Email address is required.")
+                    elif not _is_valid_email(email):
+                        errors.append("Please enter a valid email address (e.g. you@example.com).")
+                    if not message.strip():
+                        errors.append("Message body cannot be empty.")
 
-                    st.success(
-                        f"**Message received, {name.split()[0]}!** "
-                        f"Your {topic.lower()} has been forwarded to the research team. "
-                        f"We will reply to **{email}** within 24 to 48 hours."
-                    )
+                    if errors:
+                        for err in errors:
+                            st.error(f"  {err}")
+                    else:
+                        # -------------------------------------------------------
+                        # FORM DELIVERY - FormSubmit.co (no credentials required)
+                        # Injects a hidden HTML form and submits it programmatically
+                        # to deliver the message to CONTACT_EMAIL.
+                        # -------------------------------------------------------
+                        newsletter_str = "Yes - add to mailing list" if newsletter else "No"
+                        form_html = f"""
+                        <form id="nairapulse-contact"
+                              action="https://formsubmit.co/{CONTACT_EMAIL}"
+                              method="POST"
+                              style="display:none;">
+                            <input type="hidden" name="_captcha"     value="false">
+                            <input type="hidden" name="_template"    value="table">
+                            <input type="hidden" name="_subject"     value="NairaPulse AI - Contact Form: {topic} ({priority})">
+                            <input type="hidden" name="Name"         value="{name}">
+                            <input type="hidden" name="Email"        value="{email}">
+                            <input type="hidden" name="Topic"        value="{topic}">
+                            <input type="hidden" name="Priority"     value="{priority}">
+                            <input type="hidden" name="Newsletter"   value="{newsletter_str}">
+                            <input type="hidden" name="Message"      value="{message.replace(chr(10), ' | ')}">
+                        </form>
+                        <script>
+                            document.getElementById("nairapulse-contact").submit();
+                        </script>
+                        """
+                        components.html(form_html, height=0)
 
-                    if newsletter:
-                        st.info(
-                            "You have been added to the NairaPulse AI update list. "
-                            "Expect no more than two notifications per month."
+                        st.success(
+                            f"**Message received, {name.split()[0]}!** "
+                            f"Your {topic.lower()} has been forwarded to the research team. "
+                            f"We will reply to **{email}** within 24 to 48 hours."
                         )
 
-        # -------------------------------------------------------------------
-        # Alternative Contact Methods
-        # -------------------------------------------------------------------
-        st.markdown("<br>", unsafe_allow_html=True)
-        render_section_header(
-            '<i class="icofont-phone-circle np-icon-primary"></i>',
-            "Other Ways to Reach Us"
-        )
+                        if newsletter:
+                            st.info(
+                                "You have been added to the NairaPulse AI update list. "
+                                "Expect no more than two notifications per month."
+                            )
 
-        alt_col1, alt_col2 = st.columns(2, gap="medium")
-
-        with alt_col1:
+        with contact_tabs[1]:
             st.markdown("""
-            <div class="np-card">
-                <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.8rem;">
-                    <i class="icofont-email np-icon-primary np-icon-md"></i>
-                    <strong>Personal Email</strong>
-                </div>
-                <div style="color:var(--np-muted); font-size:0.95rem; line-height:1.7;">
-                    developercdo@gmail.com<br>
-                    <em style="font-size:0.85rem;">For direct correspondence and academic inquiries</em>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            We value your feedback to improve the forecasting system. Use the form below 
+            to rate your experience and provide suggestions.
+            """)
 
-        with alt_col2:
-            st.markdown("""
-            <div class="np-card">
-                <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.8rem;">
-                    <i class="icofont-brand-github np-icon-primary np-icon-md"></i>
-                    <strong>GitHub Issues</strong>
-                </div>
-                <div style="color:var(--np-muted); font-size:0.95rem; line-height:1.7;">
-                    Found a bug or want to request a feature?<br>
-                    Open a detailed issue on the project repository.
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            with st.form("feedback_form", clear_on_submit=True):
+                fb_name = st.text_input(
+                    "Full Name",
+                    placeholder="Optional (e.g. Adaeze Okonkwo)",
+                    help="Your name if you wish to identify yourself"
+                )
+
+                fb_email = st.text_input(
+                    "Email Address",
+                    placeholder="Optional (you@example.com)",
+                    help="Provide an email if you want a response to your feedback"
+                )
+
+                rating = st.radio(
+                    "Overall App Rating *",
+                    ["5 - Excellent", "4 - Very Good", "3 - Good", "2 - Fair", "1 - Poor"],
+                    horizontal=True,
+                    index=0,
+                    help="Rate your overall experience with NairaPulse AI"
+                )
+
+                usability = st.selectbox(
+                    "How easy is it to navigate the application? *",
+                    ["Very Easy", "Easy", "Neutral", "Difficult", "Very Difficult"],
+                    help="Assess the usability and user interface design"
+                )
+
+                usefulness = st.selectbox(
+                    "How useful are the inflation forecasts to you? *",
+                    ["Extremely Useful", "Very Useful", "Somewhat Useful", "Not Useful"],
+                    help="Assess the value of the forecasting outputs"
+                )
+
+                purpose = st.selectbox(
+                    "What is your primary use case? *",
+                    ["Academic Research", "Business / Price Strategy", "Personal Finance", "Media / Journalism", "Other"],
+                    help="Let us know how you are using the forecasting data"
+                )
+
+                suggestions = st.text_area(
+                    "What improvements, features, or data sources would you suggest? *",
+                    height=150,
+                    placeholder="Your suggestions, bug details, or constructive comments...",
+                    help="Please provide any specific suggestions for improvement"
+                )
+
+                fb_submitted = st.form_submit_button(
+                    "SUBMIT FEEDBACK",
+                    use_container_width=True,
+                    type="primary"
+                )
+
+                if fb_submitted:
+                    fb_errors = []
+                    if not suggestions.strip():
+                        fb_errors.append("Suggestions or comments cannot be empty.")
+                    if fb_email.strip() and not _is_valid_email(fb_email):
+                        fb_errors.append("Please enter a valid email address if providing one.")
+
+                    if fb_errors:
+                        for err in fb_errors:
+                            st.error(f"  {err}")
+                    else:
+                        fb_name_val = fb_name.strip() if fb_name.strip() else "Anonymous"
+                        fb_email_val = fb_email.strip() if fb_email.strip() else "anonymous@example.com"
+
+                        fb_form_html = f"""
+                        <form id="nairapulse-feedback"
+                              action="https://formsubmit.co/{CONTACT_EMAIL}"
+                              method="POST"
+                              style="display:none;">
+                            <input type="hidden" name="_captcha"     value="false">
+                            <input type="hidden" name="_template"    value="table">
+                            <input type="hidden" name="_subject"     value="NairaPulse AI - App Feedback: {rating.split()[0]}">
+                            <input type="hidden" name="Name"         value="{fb_name_val}">
+                            <input type="hidden" name="Email"        value="{fb_email_val}">
+                            <input type="hidden" name="App Rating"   value="{rating}">
+                            <input type="hidden" name="Usability"    value="{usability}">
+                            <input type="hidden" name="Usefulness"   value="{usefulness}">
+                            <input type="hidden" name="Primary Use"  value="{purpose}">
+                            <input type="hidden" name="Comments"     value="{suggestions.replace(chr(10), ' | ')}">
+                        </form>
+                        <script>
+                            document.getElementById("nairapulse-feedback").submit();
+                        </script>
+                        """
+                        components.html(fb_form_html, height=0)
+
+                        st.success(
+                            f"**Feedback received!** Thank you for helping us improve NairaPulse AI."
+                        )
 
     # -----------------------------------------------------------------------
     # RIGHT COLUMN - Developer & Project Info
