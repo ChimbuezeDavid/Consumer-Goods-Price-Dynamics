@@ -200,10 +200,8 @@ def show_about():
         "Technology Stack"
     )
 
-    tech_cols = st.columns(4, gap="medium")
-
     techs = [
-        ("icofont-brand-python", "Python 3.10"),
+        ("icofont-console", "Python 3.10"),
         ("icofont-layers", "TensorFlow 2"),
         ("icofont-laboratory", "Scikit-learn"),
         ("icofont-chart-bar-graph", "Statsmodels"),
@@ -213,14 +211,20 @@ def show_about():
         ("icofont-table", "Pandas / NumPy"),
     ]
 
-    for i, (icon_class, tech_name) in enumerate(techs):
-        with tech_cols[i % 4]:
-            st.markdown(f"""
-            <div class="np-card" style="text-align:center; padding:1.5rem;">
-                <i class="{icon_class} np-icon-primary" style="font-size:2.2rem; margin-bottom:0.5rem; display:block;"></i>
-                <div style="font-weight:700; color:var(--np-primary); font-size:0.95rem;">{tech_name}</div>
-            </div>
-            """, unsafe_allow_html=True)
+    tech_cards_html = ""
+    for icon_class, tech_name in techs:
+        tech_cards_html += f"""
+        <div class="np-card" style="text-align:center; padding:1.5rem; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+            <i class="{icon_class} np-icon-primary" style="font-size:2.2rem; margin-bottom:0.5rem; display:block;"></i>
+            <div style="font-weight:700; color:var(--np-primary); font-size:0.95rem;">{tech_name}</div>
+        </div>
+        """
+
+    st.markdown(f"""
+    <div class="tech-grid">
+        {tech_cards_html}
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown("<br><br>", unsafe_allow_html=True)
 

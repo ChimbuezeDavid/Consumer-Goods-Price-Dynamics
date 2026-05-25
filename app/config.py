@@ -455,6 +455,27 @@ a:hover {{
     margin: 2rem 0;
 }}
 
+/* Tech Grid */
+.tech-grid {{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    margin: 1.5rem 0;
+}}
+
+@media (max-width: 992px) {{
+    .tech-grid {{
+        grid-template-columns: repeat(2, 1fr);
+    }}
+}}
+
+@media (max-width: 576px) {{
+    .tech-grid {{
+        grid-template-columns: 1fr;
+    }}
+}}
+
 .stat-card {{
     background: var(--np-surface);
     border: 1px solid var(--np-border);
