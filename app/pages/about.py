@@ -34,11 +34,11 @@ def show_about():
         forecasting **month-over-month** price changes across three categories that together represent 
         the majority of household expenditure:
 
-        - **Food** &mdash; approximately 50% of household budgets; driven by seasonal harvests, 
+        - **Food** -- approximately 50% of household budgets; driven by seasonal harvests, 
           exchange rate pass-through, and fuel costs for agricultural logistics.
-        - **Transport** &mdash; approximately 12% of household budgets; a direct function of 
+        - **Transport** -- approximately 12% of household budgets; a direct function of 
           global crude oil benchmarks and domestic fuel pricing policy.
-        - **Clothing & Footwear** &mdash; approximately 6% of household budgets; highly 
+        - **Clothing & Footwear** -- approximately 6% of household budgets; highly 
           import-dependent, tracking naira depreciation with a short lag.
 
         The system is designed to support **researchers, policymakers, procurement teams, and 
@@ -74,7 +74,7 @@ def show_about():
     )
 
     st.markdown("""
-    The system employs a **stacked generalization** framework — a meta-learning approach in which 
+    The system employs a **stacked generalization** framework, a meta-learning approach in which 
     multiple heterogeneous base learners are trained independently, and a higher-order meta-learner 
     is trained to optimally combine their out-of-sample predictions. This architecture exploits the 
     complementary strengths of each model family while avoiding over-reliance on any single 
@@ -175,55 +175,22 @@ def show_about():
         st.markdown("""
         **Input Feature Groups:**
 
-        - **Macroeconomic levels** &mdash; exchange rate (USD/NGN), Brent crude (USD/barrel), headline CPI
-        - **Lagged values** &mdash; 1, 2, and 3-month lags of all macro variables and CPI sub-indices
-        - **Rolling statistics** &mdash; 3-month and 6-month rolling means, standard deviations, and min/max windows
-        - **Month-over-month lags** &mdash; lagged MoM changes for the three target categories
+        - **Macroeconomic levels** -- exchange rate (USD/NGN), Brent crude (USD/barrel), headline CPI
+        - **Lagged values** -- 1, 2, and 3-month lags of all macro variables and CPI sub-indices
+        - **Rolling statistics** -- 3-month and 6-month rolling means, standard deviations, and min/max windows
+        - **Month-over-month lags** -- lagged MoM changes for the three target categories
         """)
 
     with feat_col2:
         st.markdown("""
         &nbsp;
 
-        - **Derived interactions** &mdash; oil price multiplied by exchange rate (import cost proxy)
-        - **Cyclical encoding** &mdash; sine/cosine encoding of calendar month to capture seasonality continuously
-        - **Structural break dummies** &mdash; binary indicators for COVID-19 shock (2020), fuel subsidy removal (2023), FX unification (2023)
-        - **Cross-category spillover** &mdash; lagged values of sibling category MoM changes as predictors
-        - **Trend features** &mdash; linear trend variable and year-over-year growth rates
+        - **Derived interactions** -- oil price multiplied by exchange rate (import cost proxy)
+        - **Cyclical encoding** -- sine/cosine encoding of calendar month to capture seasonality continuously
+        - **Structural break dummies** -- binary indicators for COVID-19 shock (2020), fuel subsidy removal (2023), FX unification (2023)
+        - **Cross-category spillover** -- lagged values of sibling category MoM changes as predictors
+        - **Trend features** -- linear trend variable and year-over-year growth rates
         """)
-
-    st.markdown("<br><br>", unsafe_allow_html=True)
-
-    # Performance
-    render_section_header(
-        '<i class="icofont-checked np-icon-primary"></i>',
-        "Model Performance"
-    )
-
-    st.markdown("""
-    Models were validated on a held-out test set representing the most recent 20% of observations 
-    (approximately 2021–2026). Performance is measured by Mean Absolute Error (MAE) on the 
-    month-over-month percentage change — the unit most directly interpretable by practitioners.
-    """)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    perf_data = {
-        "Model": ["SARIMAX", "Random Forest", "LSTM", "XGBoost Stack (Ensemble)"],
-        "Food MAE (pp)": ["0.41", "0.29", "0.35", "0.26"],
-        "Transport MAE (pp)": ["0.38", "0.31", "0.34", "0.28"],
-        "Clothing MAE (pp)": ["0.44", "0.34", "0.39", "0.31"],
-    }
-    import pandas as pd
-    perf_df = pd.DataFrame(perf_data)
-    st.dataframe(perf_df, use_container_width=True, hide_index=True)
-
-    st.markdown("""
-    <div style="color:var(--np-muted); font-size:0.85rem; margin-top:0.5rem;">
-        pp = percentage points. Lower MAE is better.
-        Compared to baseline ARIMA (MAE 0.9–1.6 pp), the ensemble achieves a 64–75% reduction in error.
-    </div>
-    """, unsafe_allow_html=True)
 
     st.markdown("<br><br>", unsafe_allow_html=True)
 
@@ -271,7 +238,7 @@ def show_about():
         <div style="opacity:0.95; font-size:1.05rem; line-height:1.8;">
             Department of Computing<br>
             Afe Babalola University (ABUAD), Ado-Ekiti, Nigeria<br>
-            <span style="font-size:0.9rem; opacity:0.8;">Undergraduate Research Project &mdash; 2025/2026 Academic Year</span>
+            <span style="font-size:0.9rem; opacity:0.8;">Undergraduate Research Project, 2025/2026 Academic Year</span>
         </div>
     </div>
     """, unsafe_allow_html=True)

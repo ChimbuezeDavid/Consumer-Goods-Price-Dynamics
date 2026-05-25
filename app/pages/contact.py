@@ -10,7 +10,7 @@ import streamlit.components.v1 as components
 from app.ui_components import render_hero, render_section_header
 
 # ---------------------------------------------------------------------------
-# CONTACT EMAIL — submissions are delivered here via FormSubmit.co
+# CONTACT EMAIL - submissions are delivered here via FormSubmit.co
 # ---------------------------------------------------------------------------
 CONTACT_EMAIL = "developercdo@gmail.com"
 
@@ -31,7 +31,7 @@ def show_contact():
     col1, col2 = st.columns([1.65, 1], gap="large")
 
     # -----------------------------------------------------------------------
-    # LEFT COLUMN — Contact Form
+    # LEFT COLUMN - Contact Form
     # -----------------------------------------------------------------------
     with col1:
         render_section_header(
@@ -41,7 +41,7 @@ def show_contact():
 
         st.markdown("""
         Whether you have a question about the forecasting methodology, spotted an issue, 
-        or are interested in academic collaboration or data exchange — use the form below. 
+        or are interested in academic collaboration or data exchange, use the form below. 
         Submissions are delivered directly to the research team.
         """)
 
@@ -55,7 +55,7 @@ def show_contact():
             email = st.text_input(
                 "Email Address *",
                 placeholder="you@example.com",
-                help="We will reply to this address within 24–48 hours"
+                help="We will reply to this address within 24 to 48 hours"
             )
 
             topic = st.selectbox(
@@ -77,7 +77,7 @@ def show_contact():
                 "Your Message *",
                 height=200,
                 placeholder="Describe your inquiry in as much detail as you wish...",
-                help="Please be as specific as possible — it helps us respond more usefully."
+                help="Please be as specific as possible; it helps us respond more usefully."
             )
 
             priority = st.radio(
@@ -114,11 +114,11 @@ def show_contact():
                         st.error(f"  {err}")
                 else:
                     # -------------------------------------------------------
-                    # FORM DELIVERY — FormSubmit.co (no credentials required)
+                    # FORM DELIVERY - FormSubmit.co (no credentials required)
                     # Injects a hidden HTML form and submits it programmatically
                     # to deliver the message to CONTACT_EMAIL.
                     # -------------------------------------------------------
-                    newsletter_str = "Yes — add to mailing list" if newsletter else "No"
+                    newsletter_str = "Yes - add to mailing list" if newsletter else "No"
                     form_html = f"""
                     <form id="nairapulse-contact"
                           action="https://formsubmit.co/{CONTACT_EMAIL}"
@@ -126,7 +126,7 @@ def show_contact():
                           style="display:none;">
                         <input type="hidden" name="_captcha"     value="false">
                         <input type="hidden" name="_template"    value="table">
-                        <input type="hidden" name="_subject"     value="NairaPulse AI — Contact Form: {topic} ({priority})">
+                        <input type="hidden" name="_subject"     value="NairaPulse AI - Contact Form: {topic} ({priority})">
                         <input type="hidden" name="Name"         value="{name}">
                         <input type="hidden" name="Email"        value="{email}">
                         <input type="hidden" name="Topic"        value="{topic}">
@@ -143,7 +143,7 @@ def show_contact():
                     st.success(
                         f"**Message received, {name.split()[0]}!** "
                         f"Your {topic.lower()} has been forwarded to the research team. "
-                        f"We will reply to **{email}** within 24–48 hours."
+                        f"We will reply to **{email}** within 24 to 48 hours."
                     )
 
                     if newsletter:
@@ -168,11 +168,11 @@ def show_contact():
             <div class="np-card">
                 <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.8rem;">
                     <i class="icofont-email np-icon-primary np-icon-md"></i>
-                    <strong>Institutional Email</strong>
+                    <strong>Personal Email</strong>
                 </div>
                 <div style="color:var(--np-muted); font-size:0.95rem; line-height:1.7;">
-                    chimbuezedavid@abuad.edu.ng<br>
-                    <em style="font-size:0.85rem;">For formal academic or institutional correspondence</em>
+                    developercdo@gmail.com<br>
+                    <em style="font-size:0.85rem;">For direct correspondence and academic inquiries</em>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -192,7 +192,7 @@ def show_contact():
             """, unsafe_allow_html=True)
 
     # -----------------------------------------------------------------------
-    # RIGHT COLUMN — Developer & Project Info
+    # RIGHT COLUMN - Developer & Project Info
     # -----------------------------------------------------------------------
     with col2:
         render_section_header(
@@ -210,7 +210,7 @@ def show_contact():
                 <strong>Institution:</strong> Afe Babalola University (ABUAD)<br>
                 <strong>Department:</strong> Computing<br>
                 <strong>Programme:</strong> B.Sc. Computer Science<br>
-                <strong>Year:</strong> Final Year — 2025/2026<br>
+                <strong>Year:</strong> Final Year, 2025/2026<br>
                 <strong>Project Type:</strong> Undergraduate Research
             </div>
         </div>
@@ -222,23 +222,18 @@ def show_contact():
         <div class="np-card">
             <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
                 <i class="icofont-link np-icon-primary np-icon-md"></i>
-                <strong style="color:var(--np-primary);">Professional Links</strong>
+                <strong style="color:var(--np-primary);">Online Profiles</strong>
             </div>
             <div style="line-height:2.4;">
                 <a href="https://github.com/ChimbuezeDavid" target="_blank"
                    style="color:var(--np-primary); text-decoration:none; font-weight:600;
                           display:flex; align-items:center; gap:0.4rem;">
-                    <i class="icofont-brand-github"></i> GitHub — ChimbuezeDavid
+                    <i class="icofont-brand-github"></i> GitHub: ChimbuezeDavid
                 </a>
-                <a href="https://x.com/ChimbuezeDavid" target="_blank"
+                <a href="https://x.com/ChimezeDavid" target="_blank"
                    style="color:var(--np-primary); text-decoration:none; font-weight:600;
                           display:flex; align-items:center; gap:0.4rem;">
-                    <i class="icofont-twitter"></i> X / Twitter — @ChimbuezeDavid
-                </a>
-                <a href="https://linkedin.com/in/chimbuezedavid" target="_blank"
-                   style="color:var(--np-primary); text-decoration:none; font-weight:600;
-                          display:flex; align-items:center; gap:0.4rem;">
-                    <i class="icofont-linkedin"></i> LinkedIn — Chimbueze David
+                    <i class="icofont-twitter"></i> X (Twitter): @ChimezeDavid
                 </a>
             </div>
         </div>
@@ -290,19 +285,19 @@ def show_contact():
         with st.expander("How accurate are the forecasts?"):
             st.markdown("""
             The ensemble model achieves a Mean Absolute Error (MAE) of approximately 
-            **0.26–0.31 percentage points** on the held-out test set, depending on category. 
+            **0.26 to 0.31 percentage points** on the held-out test set, depending on category. 
             In practical terms, if the system forecasts a +2.5% month-over-month change 
             in food prices, the actual outturn typically falls between +2.2% and +2.8%.
 
             **Benchmark comparison:**  
             Traditional univariate ARIMA models applied to Nigerian CPI data produce MAEs 
-            of 0.9–1.6 percentage points in the same evaluation window. The NairaPulse AI 
-            ensemble achieves a **64–75% reduction** relative to this baseline.
+            of 0.9 to 1.6 percentage points in the same evaluation window. The stacked 
+            ensemble achieves a **64 to 75% reduction** relative to this baseline.
 
             **Limitations to note:**  
-            Accuracy degrades at longer horizons (months 10–24), and unexpected structural 
-            shocks — such as sudden currency devaluations, subsidy removals, or external 
-            commodity crises — can produce forecast errors larger than the typical range.
+            Accuracy degrades at longer horizons (months 10 to 24), and unexpected structural 
+            shocks such as sudden currency devaluations, subsidy removals, or external 
+            commodity crises can produce forecast errors larger than the typical range.
             """)
 
         with st.expander("Can this be used to inform real business or policy decisions?"):
@@ -310,10 +305,10 @@ def show_contact():
             The system is designed to support, not replace, professional judgment. 
             It is well-suited for:
 
-            - **Procurement and inventory planning** over a 3–6 month horizon
+            - **Procurement and inventory planning** over a 3 to 6 month horizon
             - **Budget scenario analysis** for organisations with Nigeria-facing supply chains
             - **Policy research** and academic literature on emerging-market inflation dynamics
-            - **Trend identification** — distinguishing rising from falling price regimes
+            - **Trend identification**: distinguishing rising from falling price regimes
 
             It is **not** recommended as a sole input for:
             - Financial derivatives pricing or trading
@@ -350,9 +345,9 @@ def show_contact():
             and submit a pull request with a clear description of your changes.
 
             **Data contributions:**  
-            Share alternative or complementary data sources — satellite-derived 
+            Share alternative or complementary data sources such as satellite-derived 
             agricultural indices, high-frequency retail price surveys, Google Trends 
-            proxies, or cross-border trade data — that may improve forecast accuracy.
+            proxies, or cross-border trade data that may improve forecast accuracy.
 
             **Research collaboration:**  
             We are interested in extending the methodology to other African countries, 
@@ -377,18 +372,18 @@ def show_contact():
 
     st.markdown("**APA 7th Edition:**")
     st.code("""
-David, C. (2026). NairaPulse AI: A stacked ensemble model for forecasting
-inflation-driven consumer goods price dynamics in Nigeria.
+David, C. (2026). Development of a stacked ensemble model for forecasting price
+dynamics of consumer goods in Nigeria.
 Undergraduate Research Project, Department of Computing,
 Afe Babalola University, Ado-Ekiti, Nigeria.
     """, language="text")
 
     st.markdown("**BibTeX:**")
     st.code("""
-@misc{david2026nairapulse,
+@misc{david2026stackedensemble,
   author      = {David, Chimbueze},
-  title       = {{NairaPulse AI}: A Stacked Ensemble Model for Forecasting
-                 Inflation-Driven Consumer Goods Price Dynamics in {Nigeria}},
+  title       = {Development of a Stacked Ensemble Model for Forecasting Price
+                 Dynamics of Consumer Goods in {Nigeria}},
   year        = {2026},
   institution = {Afe Babalola University},
   type        = {Undergraduate Research Project},

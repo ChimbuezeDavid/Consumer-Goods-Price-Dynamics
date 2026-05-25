@@ -11,7 +11,7 @@ def show_home():
     """Landing page with clean, spacious layout and professional copy."""
     render_hero(
         title="NairaPulse AI",
-        subtitle="An ensemble machine learning system for forecasting consumer goods price dynamics in Nigeria — built on 25 years of CPI data, macroeconomic indicators, and rigorous statistical modelling."
+        subtitle="An ensemble machine learning system for forecasting consumer goods price dynamics in Nigeria, built on 25 years of CPI data, macroeconomic indicators, and rigorous statistical modelling."
     )
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -26,9 +26,9 @@ def show_home():
         NairaPulse AI is an open research platform that applies stacked ensemble learning to 
         forecast **month-over-month price changes** in three critical Nigerian consumer goods categories:
 
-        - **Food** — the single largest household expenditure, sensitive to harvest cycles and exchange rate shocks
-        - **Transport** — tightly linked to global crude oil prices and domestic fuel subsidy policies
-        - **Clothing & Footwear** — highly import-dependent, tracking naira depreciation in near real-time
+        - **Food** -- the single largest household expenditure, sensitive to harvest cycles and exchange rate shocks
+        - **Transport** -- tightly linked to global crude oil prices and domestic fuel subsidy policies
+        - **Clothing & Footwear** -- highly import-dependent, tracking naira depreciation in near real-time
 
         Together, these three categories represent over **70% of Nigerian household spending**. 
         Accurate short-to-medium-term forecasts of these categories directly informs household 
@@ -52,7 +52,7 @@ def show_home():
                 <strong>$105 / barrel</strong> &nbsp; Brent Crude
             </div>
             <div style="margin-top:1rem; font-size:0.78rem; opacity:0.65;">
-                Source: CBN / NBS — Feb 2026
+                Source: CBN / NBS, Feb 2026
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -124,7 +124,7 @@ def show_home():
     )
 
     st.markdown("""
-    NairaPulse AI uses a **stacked generalization** (meta-learning) architecture — three 
+    NairaPulse AI uses a **stacked generalization** (meta-learning) architecture. Three 
     specialised base models, each extracting a different signal from the data, are combined 
     by a trained meta-learner that learns the optimal weighted combination:
     """)
