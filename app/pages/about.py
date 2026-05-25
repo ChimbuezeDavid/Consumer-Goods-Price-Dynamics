@@ -167,25 +167,22 @@ def show_about():
     rates, EIA Brent crude oil prices, and a manually curated structural break catalogue.
     """)
 
+    st.markdown("**Input Feature Groups:**")
     st.markdown("<br>", unsafe_allow_html=True)
 
     feat_col1, feat_col2 = st.columns(2, gap="large")
 
     with feat_col1:
         st.markdown("""
-        **Input Feature Groups:**
-
         - **Macroeconomic levels** -- exchange rate (USD/NGN), Brent crude (USD/barrel), headline CPI
         - **Lagged values** -- 1, 2, and 3-month lags of all macro variables and CPI sub-indices
         - **Rolling statistics** -- 3-month and 6-month rolling means, standard deviations, and min/max windows
         - **Month-over-month lags** -- lagged MoM changes for the three target categories
+        - **Derived interactions** -- oil price multiplied by exchange rate (import cost proxy)
         """)
 
     with feat_col2:
         st.markdown("""
-        &nbsp;
-
-        - **Derived interactions** -- oil price multiplied by exchange rate (import cost proxy)
         - **Cyclical encoding** -- sine/cosine encoding of calendar month to capture seasonality continuously
         - **Structural break dummies** -- binary indicators for COVID-19 shock (2020), fuel subsidy removal (2023), FX unification (2023)
         - **Cross-category spillover** -- lagged values of sibling category MoM changes as predictors
@@ -213,18 +210,14 @@ def show_about():
 
     tech_cards_html = ""
     for icon_class, tech_name in techs:
-        tech_cards_html += f"""
-        <div class="np-card" style="text-align:center; padding:1.5rem; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-            <i class="{icon_class} np-icon-primary" style="font-size:2.2rem; margin-bottom:0.5rem; display:block;"></i>
-            <div style="font-weight:700; color:var(--np-primary); font-size:0.95rem;">{tech_name}</div>
-        </div>
-        """
+        tech_cards_html += (
+            f'<div class="np-card" style="text-align:center; padding:1.5rem; display:flex; flex-direction:column; align-items:center; justify-content:center;">'
+            f'<i class="{icon_class} np-icon-primary" style="font-size:2.2rem; margin-bottom:0.5rem; display:block;"></i>'
+            f'<div style="font-weight:700; color:var(--np-primary); font-size:0.95rem;">{tech_name}</div>'
+            f'</div>'
+        )
 
-    st.markdown(f"""
-    <div class="tech-grid">
-        {tech_cards_html}
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f'<div class="tech-grid">{tech_cards_html}</div>', unsafe_allow_html=True)
 
     st.markdown("<br><br>", unsafe_allow_html=True)
 
